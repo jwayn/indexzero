@@ -1,0 +1,17 @@
+{
+  "name": "indexzer0",
+  "version": "1.0.0",
+  "description": "An open source stack overflow clone.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Prickett",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.17.2",
+    "pg": "^7.11.0"
+  }
+}
