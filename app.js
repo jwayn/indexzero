@@ -5,6 +5,7 @@ const index = require('./routes/index');
 const auth = require('./auth');
 
 const app = express();
+app.use(express.static(__dirname + '/public'));
 
 //middleware
 app.use('/auth', auth);
