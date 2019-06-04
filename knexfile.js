@@ -1,6 +1,10 @@
 module.exports = {
     development: {
         client: 'pg',
-        connection: 'postgres://localhost/indexzero'
+        connection: {
+            host: 'localhost',
+            user: 'indexzero',
+            database: 'indexzero'
+        }
     },
 };
