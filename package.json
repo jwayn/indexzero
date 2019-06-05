@@ -9,6 +9,7 @@
   "author": "Jason Prickett",
   "license": "GPL-3.0-only",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.17.2",

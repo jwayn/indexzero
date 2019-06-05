@@ -1,5 +1,9 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const User = require('../db/user');
+
 const router = express.Router();
 
 //Route paths are prepended with /auth
@@ -30,10 +34,22 @@ router.post('/login', (req, res, next) => {
 
 router.post('/signup', (req, res, next) => {
     if(validUser(req.body)) {
-        //Post user to DB, then return message
-        res.json({
-            message: '🎉'
-        });
+        User.getOneByEmail(req.body.email)
+        .then(user => {
+            res.json({
+                user,
+                message: '👌'
+            })
+            // bcrypt.hash(req.body.password, 10)
+            // .then((hash) => {
+            //     //insert user to DB
+            //     //redirect
+            //     res.json({
+            //         hash,
+            //         message: '🎉'
+            //     });
+            // })
+        })
     } else {
         next(new Error('Invalid User.'))
     }
