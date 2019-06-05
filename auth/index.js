@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 //Route paths are prepended with /auth
@@ -21,8 +22,15 @@ function validUser(user) {
     return validEmail && validPassword
 }
 
+router.post('/login', (req, res, next) => {
+    jwt.sign({user}, process.env.JWT_KEY, (err, token) => {
+
+    });
+})
+
 router.post('/signup', (req, res, next) => {
     if(validUser(req.body)) {
+        //Post user to DB, then return message
         res.json({
             message: '🎉'
         });
