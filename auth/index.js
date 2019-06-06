@@ -16,42 +16,77 @@ router.get('/', (req, res) => {
 
 //Ensure that email/password is valid
 function validUser(user) {
-    console.log(user);
     const validEmail = typeof user.email == 'string' && 
                         user.email.trim() != '';
     const validPassword = typeof user.password == 'string' && 
                         user.password.trim() != '' &&
                         user.password.trim().length >= 6;
 
-    return validEmail && validPassword
+    return validEmail && validPassword;
 }
 
 router.post('/login', (req, res, next) => {
-    jwt.sign({user}, process.env.JWT_KEY, (err, token) => {
-
-    });
-})
+    if(validUser(req.body)) {
+        User.getOneByEmail(req.body.email)
+        .then(user => {
+            if(user) {
+                bcrypt.compare(req.body.password, user.password)
+                .then(result => {
+                    if(result){
+                        jwt.sign({user: user.email}, process.env.JWT_SECRET, (err, token) => {
+                            res.json({token});
+                        });
+                    } else {
+                        res.status = 403
+                        res.json({
+                            status: 403,
+                            message: 'Forbidden.'
+                        })
+                    }
+                });
+            } else {
+                res.status = 403
+                res.json({
+                    status: 403,
+                    message: 'Forbidden.'
+                })
+            };
+        });
+    };
+});
 
 router.post('/signup', (req, res, next) => {
     if(validUser(req.body)) {
         User.getOneByEmail(req.body.email)
         .then(user => {
-            res.json({
-                user,
-                message: '👌'
-            })
-            // bcrypt.hash(req.body.password, 10)
-            // .then((hash) => {
-            //     //insert user to DB
-            //     //redirect
-            //     res.json({
-            //         hash,
-            //         message: '🎉'
-            //     });
-            // })
-        })
+            if(!user) {
+                bcrypt.hash(req.body.password, 10)
+                .then(hash => {
+                    const user = {
+                        email: req.body.email,
+                        password: hash,
+                        created_at: new Date(),
+                        score: 0
+                    };
+
+                    User.create(user)
+                    .then(id => {
+                        res.json({
+                            id,
+                            message: 'User created.'
+                        });
+                    });
+                });
+            } else {
+                const err = new Error('User already exists.');
+                err.status = 400;
+                next(err)
+            }
+        });
     } else {
-        next(new Error('Invalid User.'))
+        const err = new Error('Invalid user.');
+        err.status = 400;
+        next(err)
     }
 });
 

@@ -7,10 +7,15 @@ const auth = require('./auth');
 const app = express();
 
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
 
 //middleware
-app.use('/auth', auth);
+app.use('/api/auth', auth);
+app.use('/api', index);
+
+
+app.use(express.static(__dirname + '/public'));
+
+
 
 //error handler
 app.use(function(err, req, res, next) {
