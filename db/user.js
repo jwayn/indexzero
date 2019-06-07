@@ -9,7 +9,7 @@ module.exports = {
     },
     create: function(user) {
         return knex('users').insert(user, 'id').then(ids => {
-            return ids[0]
+            return ids[0];
         });
     }
 };
