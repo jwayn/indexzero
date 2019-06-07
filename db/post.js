@@ -16,9 +16,9 @@ module.exports = {
                 content: post.content,
                 created: new Date(),
                 score: 0
-            }
-            ).then(ids => {
-            return ids[0];
+            }, ['summary', 'content']
+            ).then(posts => {
+            return posts[0];
         });
     }
 };
