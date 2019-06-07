@@ -2,6 +2,8 @@ const express = require('express');
 
 //Routes imports
 const index = require('./routes/index');
+const users = require('./routes/users');
+const posts = require('./routes/posts')
 const auth = require('./auth');
 
 const app = express();
@@ -10,6 +12,8 @@ app.use(express.json());
 
 //middleware
 app.use('/api/auth', auth);
+app.use('/api/users', users);
+app.use('/api/posts', posts);
 app.use('/api', index);
 
 
