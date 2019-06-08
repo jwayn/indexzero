@@ -7,17 +7,29 @@ const Post = require('../db/post');
 const router = express.Router();
 
 // Return a user by ID
-router.get('/:id', (req, res) => {
-    res.json({
-        message: '🔐'
-    });
+router.get('/id=:id', (req, res) => {
+    User.getOneById(req.params.id).then(user => {
+        if(!user) return res.json({message: 'No user found.'});
+        return res.json({
+            displayName: user.displayName,
+            id: user.id,
+            email: user.email,
+            score: user.score
+        });
+    })
 });
 
-// Return all users
-router.get('/', (req, res) => {
-    res.json({
-        message: 'Get all users'
-    })
+// Return a user by email
+router.get('/email=:email', (req, res) => {
+    User.getOneByEmail(req.params.email).then(user => {
+        if(!user) return res.json({message: 'No user found.'});
+        return res.json({
+            displayName: user.displayName,
+            id: user.id,
+            email: user.email,
+            score: user.score
+        });
+    });
 });
 
 //Get all posts of a user by email

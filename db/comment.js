@@ -8,6 +8,14 @@ module.exports = {
         return knex('comments').join('users', 'comments.author', '=', 'users.id').where('users.email', email)
         .select('comments.created', 'comments.id', 'comments.score', 'comments.content', 'comments.score', 'comments.updated', 'users.email', 'users.display_name', 'users.score')
     },
+    getAllByParentPost: function(postid) {
+        return knex('comments')
+        .join('posts', 'comments.parent_post', '=', 'posts.id').where('posts.id', postid)
+        .join('users', 'comments.author', '=', 'users.id')
+        .select('comments.created', 'comments.id', 'comments.score', 'comments.content', 'comments.score', 'comments.updated', 'users.email', 'users.display_name', 'users.score')
+        .orderBy('comments.created', 'desc')
+        .orderBy('comments.updated', 'desc')
+    },
     create: function(user_id, comment) {
         return knex('comments').insert(
             {
@@ -21,5 +29,18 @@ module.exports = {
             , 'content').then(comments => {
             return comments[0];
         });
+    },
+    update: function(comment) {
+        return knex('comments')
+            .where({id: comment.id})
+            .update(comment)
+            .then(comment => {
+                return comment;
+            });
+    },
+    delete: function(commentId) {
+        return knex('comments')
+            .where({id: commentId})
+            .del()
     }
 };

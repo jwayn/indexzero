@@ -7,6 +7,9 @@ module.exports = {
     getAll: function() {
         return knex('posts').select();
     },
+    getAllLimited: function(limit) {
+        return knex('posts').select().orderBy('created', 'desc').orderBy('updated', 'desc').limit(limit);
+    },
     getAllByEmail: function(email) {
         return knex('posts').join('users', 'posts.author', '=', 'users.id').where('users.email', email)
         .select('posts.created', 'posts.id', 'posts.summary', 'posts.content', 'posts.score', 'posts.updated', 'users.email', 'users.score', 'users.first_name', 'users.last_name')

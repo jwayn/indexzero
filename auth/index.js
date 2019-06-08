@@ -6,14 +6,6 @@ const User = require('../db/user');
 
 const router = express.Router();
 
-//Route paths are prepended with /auth
-router.get('/', (req, res) => {
-    res.json({
-        message: '🔐'
-    });
-});
-
-
 //Ensure that email/password is valid
 function validUser(user) {
     const validEmail = typeof user.email == 'string' && 
