@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -23,4 +23,37 @@ function App() {
   );
 }
 
-export default App;
+class Posts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      posts: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(posts => {
+        this.setState({posts}, () => console.log('Posts fetched', posts));
+      })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Posts</h1>
+        <ul>
+          {this.state.posts.map(post => 
+            <li key={post.id}>
+              <h3>{post.summary}</h3>
+              <p>{post.content}</p>
+            </li>
+          )}
+        </ul>
+      </div>
+    )
+  }
+}
+
+export default Posts;
