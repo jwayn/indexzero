@@ -52,7 +52,7 @@ router.post('/', verifyToken, (req, res) => {
     }
 });
 
-// Return a post by ID
+// Get a post by ID
 router.get('/:id', (req, res, next) => {
     try
     {

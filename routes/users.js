@@ -11,7 +11,7 @@ router.get('/id=:id', (req, res) => {
     User.getOneById(req.params.id).then(user => {
         if(!user) return res.json({message: 'No user found.'});
         return res.json({
-            displayName: user.displayName,
+            displayName: user.display_name,
             id: user.id,
             email: user.email,
             score: user.score

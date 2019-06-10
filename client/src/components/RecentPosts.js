@@ -10,7 +10,7 @@ export default class RecentPosts extends Component {
     }
 
     renderPost(data) {
-        return <Post key={data.id} value={data} />
+        return <Post key={data.id} post={data} />
     }
 
     componentDidMount() {
@@ -18,7 +18,7 @@ export default class RecentPosts extends Component {
         .then(res => res.json())
         .then(posts => {
             this.setState({posts}, () => console.log('Posts fetched', posts));
-        })
+        });
     }
     
     render() {
