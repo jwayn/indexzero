@@ -1,7 +1,7 @@
 const express = require('express');
 
-const User = require('../db/user');
 const Post = require('../db/post');
+const Tag = require('../db/tag');
 const verifyToken = require('../middleware/verify-token');
 
 const router = express.Router();
@@ -67,6 +67,22 @@ router.get('/:id', (req, res, next) => {
         next(err)
     }
 });
+
+// Get all tags associated with a post by ID
+router.get('/:id/tags', (req, res, next) => {
+    try
+    {
+        Tag.getAllByPost(req.params.id).then(tags => {
+            res.json({
+                tags
+            })
+        })
+    } catch {
+        const err = new Error('Problem retrieving tags.');
+        err.status = 500;
+        next(err)
+    }
+})
 
 //update a post by id
 router.put('/:id', verifyToken, (req, res) => {

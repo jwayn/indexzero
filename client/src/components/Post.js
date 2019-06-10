@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Post.css';
+import Tag from './Tag';
 import viewsIcon from '../images/views.svg';
 import commentsIcon from '../images/comments.svg';
 import likesIcon from '../images/likes.svg';
@@ -9,12 +10,14 @@ export default class Post extends Component {
     constructor() {
         super();
         this.state = {
-            author: ''
+            author: '',
+            tags: []
         }
     }
 
     componentDidMount() {
         this.getAuthor(this.props.post.author);
+        this.getTags(this.props.post.id);
     }
 
     evaluateIdentity(identity){
@@ -39,10 +42,17 @@ export default class Post extends Component {
     }
 
     // TODO: Create tags routes on server and Tag component on client
-    // getTags(postID) {
-    //     Fetch the tags and throw them into the state
-    //     fetch('/')
-    // }
+    getTags(postID) {
+        fetch(`/api/posts/${postID}/tags`)
+        .then(res => res.json())
+        .then(data => {
+            this.setState({tags: data.tags});
+        });
+    }
+
+    renderTag(tagName, tagID) {
+        return <Tag key={tagID} name={tagName} />
+    }
 
     render() {
         this.post = this.props.post;
@@ -60,7 +70,9 @@ export default class Post extends Component {
                     </div>
                     <div className="post__information__subinfo">
                         <div className="post__information__subinfo__tags">
-                            <span className='post__information__subinfo__tags__tag'>post</span>
+                            {this.state.tags.map(tag => {
+                                return this.renderTag(tag.name, tag.id);
+                            })}
                         </div>
                         <div className="post__information__subinfo__stats">
                             <div className="post__information__subinfo__stats__interactions">
