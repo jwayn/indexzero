@@ -1,0 +1,47 @@
+.post {
+    width: 100%;
+    display: flex;
+    background-color: #EEEEEE;
+    border-bottom: 1px solid #FAFAFA;
+}
+
+.post__identity {
+    width: 125px;
+    height: 125px;
+    background-repeat: no-repeat;
+    background-size: 75px;
+    background-position: center;
+}
+
+.post__identity--asked {
+    background-color: #D32F2F;
+    background-image: url('../images/asked.svg');
+}
+
+.post__identity--answered {
+    background-color: #388E3C;
+    background-image: url('../images/answered.svg');
+}
+
+.post__identity--article {
+    background-color: #147CAB;
+    background-image: url('../images/article.svg');
+}
+
+.post__information__title {
+    margin: 10px 20px;
+}
+
+.post__information__title__heading {
+    font-size: 28px;
+    font-weight: 600;
+    color: #147CAB;
+}
+
+.post__information__subinfo__stats__interactions {
+    display: flex;
+}
+.post__information__subinfo__stats__interactions__icon {
+    width: 18px;
+    height: 18px;
+}
