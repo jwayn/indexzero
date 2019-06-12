@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import './Post.css';
 import Tag from './Tag';
 import viewsIcon from '../images/views.svg';
@@ -46,7 +47,9 @@ export default class Post extends Component {
         fetch(`/api/posts/${postID}/tags`)
         .then(res => res.json())
         .then(data => {
-            this.setState({tags: data.tags});
+            const tags = data.tags;
+            tags.sort((a, b) => a.name.localeCompare(b.name))
+            this.setState({tags});
         });
     }
 
@@ -91,7 +94,7 @@ export default class Post extends Component {
                                     {/* TODO 
                                         Add react router to click the user to go to profile
                                     */}
-                                    {`${this.evaluateIdentity(this.post.identity)} ago by `}
+                                    {`${this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} ago by `}
                                     <span className="post__information__subinfo__stats__action__text__username">
                                         {this.state.author}
                                     </span>

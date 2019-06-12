@@ -14,7 +14,7 @@ export default class RecentPosts extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/posts')
+        fetch('/api/posts/recent/limit=20')
         .then(res => res.json())
         .then(posts => {
             this.setState({posts}, () => console.log('Posts fetched', posts));
