@@ -44,6 +44,11 @@ router.post('/', verifyToken, (req, res) => {
                     message: 'Post created!'
                 });
             });
+
+            /* TODO: Check database for tags
+            // If tag exists, add tagid + post id to tags_posts
+            // Otherwise create new tag, and add tag id + post id to tags_posts
+            */
         };
     } catch {
         const err = new Error('Problem creating post.');

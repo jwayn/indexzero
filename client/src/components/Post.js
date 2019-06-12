@@ -42,7 +42,7 @@ export default class Post extends Component {
         });
     }
 
-    // TODO: Create tags routes on server and Tag component on client
+
     getTags(postID) {
         fetch(`/api/posts/${postID}/tags`)
         .then(res => res.json())
@@ -94,7 +94,9 @@ export default class Post extends Component {
                                     {/* TODO 
                                         Add react router to click the user to go to profile
                                     */}
-                                    {`${this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} ago by `}
+                                    <span title={moment(this.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
+                                        {`${this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} ago by `} 
+                                    </span>
                                     <span className="post__information__subinfo__stats__action__text__username">
                                         {this.state.author}
                                     </span>

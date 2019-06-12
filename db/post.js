@@ -21,7 +21,7 @@ module.exports = {
                 summary: post.summary,
                 content: post.content,
                 created: new Date(),
-                score: 0
+                identity: post.identity
             }, ['summary', 'content']
             ).then(posts => {
             return posts[0];
