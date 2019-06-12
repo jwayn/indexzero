@@ -94,8 +94,8 @@ export default class Post extends Component {
                                     {/* TODO 
                                         Add react router to click the user to go to profile
                                     */}
-                                    <span title={moment(this.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
-                                        {`${this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} ago by `} 
+                                    <span title={(this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)) + ' ' + moment(this.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
+                                        {`${this.post.identity == 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} by `} 
                                     </span>
                                     <span className="post__information__subinfo__stats__action__text__username">
                                         {this.state.author}
