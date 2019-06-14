@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
+import './Login.css';
 
 export default class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            posts: []
-        }
-    }
-
     render() {
         return (
-            <div>
+            <div className="login-signup">
+                <button className="button login__button" onClick={this.login}>Login</button>
+                <button className="button login__button" onClick={this.signup}>Signup</button>
             </div>
         );
     }

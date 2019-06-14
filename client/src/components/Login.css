@@ -1,0 +1,10 @@
+.login-signup {
+    margin-right: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.login__button {
+    min-width: 100px;
+    margin: 0px 10px;
+}

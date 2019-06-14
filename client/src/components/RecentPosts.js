@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Post from './Post';
+import PostSummary from './PostSummary';
 
 export default class RecentPosts extends Component {
     constructor() {
@@ -10,7 +10,7 @@ export default class RecentPosts extends Component {
     }
 
     renderPost(data) {
-        return <Post key={data.id} post={data} />
+        return <PostSummary key={data.id} post={data} />
     }
 
     componentDidMount() {

@@ -1,11 +1,14 @@
 import React from 'react';
 import RecentPosts from './components/RecentPosts';
+import ArticleForm from './components/ArticleForm';
+import Header from './components/Header';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <RecentPosts></RecentPosts>
+      <Header></Header>
+      <ArticleForm></ArticleForm>
     </div>
   );
 }
