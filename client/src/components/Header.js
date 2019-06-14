@@ -8,7 +8,7 @@ export default class Header extends Component {
         return (
             <div className="header-bar">
                 <div className="brand">
-                    <img className="brand__logo" src={brandIcon}></img>
+                    <img className="brand__logo" src={brandIcon} alt="Index 0"></img>
                     <span className="brand__text">Index[0]</span>
                 </div>
                 <input className="input__text-box title-search" placeholder="Search"></input>

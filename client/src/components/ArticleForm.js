@@ -6,6 +6,19 @@ import 'highlight.js/styles/github.css';
 import { Editor } from '@toast-ui/react-editor'
 
 export default class ArticleForm extends Component {
+    constructor(props) {
+        super();
+        this.editorRef = React.createRef();
+    }
+
+    submitArticle = () => {
+        console.log(this.editorRef.current.getInstance());
+        console.log('Hello!');
+    }
+
+    cancelArticle = () => {
+        //console.log(this.editor.current.getInstance.data);
+    }
 
     render() {
         return (
@@ -23,13 +36,14 @@ export default class ArticleForm extends Component {
                     <label className="input__label">Title</label>
                     <input className="input__text-box" placeholder="Provide a summary of your article."></input>
                 </div>
-                <div className="form-container__group">
+                <div className="form-container__group editor">
                     <label className="input__label">Body</label>
                     <Editor
                     previewStyle="vertical"
                     height="600px"
                     initialEditType="markdown"
                     usageStatistics="false"
+                    className="editor"
                     />
                 </div>
                 <div className="form-container__group">
