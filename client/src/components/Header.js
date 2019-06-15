@@ -12,7 +12,9 @@ export default class Header extends Component {
                     <span className="brand__text">Index[0]</span>
                 </div>
                 <input className="input__text-box title-search" placeholder="Search"></input>
-                <Login></Login>
+                <div className="login-signup">
+                    <button className="button login__button" onClick={this.showLogin}>Login</button>
+                </div>
             </div>
         )
     }

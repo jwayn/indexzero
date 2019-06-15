@@ -95,5 +95,8 @@ a {
     border-bottom: 1px solid #BDBDBD;
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+}
+
+.recent-posts {
+    width: 100%;
 }
