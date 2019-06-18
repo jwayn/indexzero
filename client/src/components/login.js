@@ -18,28 +18,36 @@ export default class Login extends Component {
         return re.test(String(email).toLowerCase());
     }
 
-    loginHandler = (event) => {
+    loginHandler = async (event) => {
         console.log('Hello!');
         event.preventDefault();
         const email = this.emailEl.current.value;
         const password = this.passwordEl.current.value;
+        console.log(email, password);
 
         if(email.trim().length === 0 || password.trim().length === 0) {
             return;
         }
 
         if (this.validateEmail(email)) {
-            fetch('/api/login', {
+            const body = JSON.stringify({
+                email: email,
+                password: password
+            });
+            console.log(body);
+            const rawRes = await fetch('/api/auth/login', {
                 method: 'POST',
-                body: {
-                    email,
-                    password
-                },
+                body,
                 headers: {
                     'Content-Type' : 'application/json'
                 }
-            }).then(data => data.json())
-            .then(json => console.log(json));
+            })
+            const res = await rawRes.json();
+            console.log(res);
+            /***********************************/
+            /* TODO:                           */
+            /* THROW THE RES INTO AUTHCONTEXT! */
+            /***********************************/
         }
     }
 
@@ -50,7 +58,7 @@ export default class Login extends Component {
     render() {
         return (
             <div className="login-form">
-                <form onSubmit={this.submitHandler}>
+                <form onSubmit={this.loginHandler}>
                     <label>Email</label>
                     <input type="email" name="email" ref={this.emailEl} />
                     <label>Password</label>
