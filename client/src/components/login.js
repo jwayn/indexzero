@@ -43,13 +43,15 @@ export default class Login extends Component {
             const res = await rawRes.json();
             if (res.token) {
                 this.context.login(res.token, res.userId);
-            }
-
-            return <Redirect to="/recent" />;
+                this.props.history.push(`/recent`);
+            } else {
+                // Set state for failed auth
+            }     
         }
     }
 
-    signUpHandler = async () => {
+    signUpHandler = async (event) => {
+        event.preventDefault();
         const email = this.emailEl.current.value;
         const password = this.passwordEl.current.value;
 
@@ -62,7 +64,7 @@ export default class Login extends Component {
                 email: email,
                 password: password
             });
-            const rawRes = await fetch('/api/auth/login', {
+            const rawRes = await fetch('/api/auth/signup', {
                 method: 'POST',
                 body,
                 headers: {
@@ -72,23 +74,24 @@ export default class Login extends Component {
             const res = await rawRes.json();
             if (res.token) {
                 this.context.login(res.token, res.userId);
+                this.props.history.push(`/recent`);
             }
 
-            return <Redirect to="/recent" />;
+            
         }
     }
 
     render() {
         return (
             <div className="login-form">
-                <form onSubmit={this.loginHandler} className="login__form">
+                <form className="login__form">
                     <label>Email</label>
                     <input type="email" name="email" ref={this.emailEl} />
                     <label>Password</label>
                     <input type="password" name="password" ref={this.passwordEl} />
                     <div className="login__form__button-group">
-                        <button className="button" onClick={this.signUp}>Sign Up</button>
-                        <button className="button" type='submit'>Login</button>
+                        <button className="button" onClick={this.signUpHandler}>Sign Up</button>
+                        <button className="button" onClick={this.loginHandler}>Login</button>
                     </div>
                 </form>
             </div>
