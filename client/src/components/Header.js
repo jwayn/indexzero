@@ -1,20 +1,46 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import './Header.css';
 import brandIcon from '../images/brand.svg';
+import AuthContext from '../context/auth-context';
 
-export default class Header extends Component {
-    render () {
+class Header extends Component{
+
+    login() {
+            
+    }
+
+    render() {
         return (
-            <div className="header-bar">
-                <div className="brand">
-                    <img className="brand__logo" src={brandIcon} alt="Index 0"></img>
-                    <span className="brand__text">Index[0]</span>
-                </div>
-                <input className="input__text-box title-search" placeholder="Search"></input>
-                <div className="login-signup">
-                    <button className="button login__button" onClick={this.showLogin}>Login</button>
-                </div>
-            </div>
+            <AuthContext.Consumer>
+            {context => {
+                return(
+                    <div className="header-bar">
+                        <NavLink to="/">
+                            <div className="brand">
+                                <img className="brand__logo" src={brandIcon} alt="Index 0"></img>
+                                <span className="brand__text">Index[0]</span>
+                            </div>
+                        </NavLink>
+                        <input className="input__text-box title-search" placeholder="Search"></input>
+                        
+                        {
+                            !context.token && 
+                            <div className="login-signup">
+                                <NavLink className="button login__button" to="/login">Login</NavLink>
+                            </div>
+                        }
+                        {
+                            context.token && 
+                            <div>{context.userId} is logged in.</div>
+                        }
+                    </div>
+                )
+            }}
+        </AuthContext.Consumer>
         )
     }
 }
+
+
+export default Header;

@@ -26,7 +26,10 @@ router.post('/login', (req, res, next) => {
                 .then(result => {
                     if(result){
                         jwt.sign({user_id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
-                            res.json({token});
+                            res.json({
+                                token,
+                                userId: user.id
+                            });
                         });
                     } else {
                         res.status = 403

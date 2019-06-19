@@ -4,6 +4,47 @@
     flex-flow: row nowrap;
 }
 
+.login-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 25vh;
+}
+
 .login__button {
-    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #147CAB;
+    color: #FAFAFA;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    min-width: 140px;
+    height: 40px;
+}
+
+.login__form {
+    display: flex;
+    flex-flow: column wrap;
+    max-width: 900px;
+}
+
+.login__form input {
+    width: 100%;
+    margin: 5px 0 20px 0;
+    height: 30px;
+    font-size: 14px;
+    color: #141E2C;
+    font-weight: 400;
+    padding: 5px;
+}
+
+.login__form label {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
 }
