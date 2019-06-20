@@ -43,6 +43,8 @@ export default class Login extends Component {
             const res = await rawRes.json();
             if (res.token) {
                 this.context.login(res.token, res.userId);
+                localStorage.setItem('jwtToken', res.token);
+                localStorage.setItem('userId', res.userId);
                 this.props.history.push(`/recent`);
             } else {
                 // Set state for failed auth
@@ -74,6 +76,8 @@ export default class Login extends Component {
             const res = await rawRes.json();
             if (res.token) {
                 this.context.login(res.token, res.userId);
+                localStorage.setItem('jwtToken', res.token);
+                localStorage.setItem('userId', res.userId);
                 this.props.history.push(`/recent`);
             }
 

@@ -15,6 +15,14 @@ class App extends Component {
     userId: null
   };
 
+  componentDidMount() {
+    //Implement remember me feature, (login.js)
+    const token = localStorage.getItem('jwtToken');
+    const userId = localStorage.getItem('userId');
+    console.log(token, userId);
+    this.setState({token, userId});
+  }
+
   login = (token, userId) => {
     this.setState({token, userId})
   };
