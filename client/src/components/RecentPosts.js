@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PostSummary from './PostSummary';
 
 export default class RecentPosts extends Component {
@@ -30,9 +31,9 @@ export default class RecentPosts extends Component {
                         <h1>
                             Recent Activity
                         </h1>
-                        <div className="page-title__header__button-group">
-                            <button className="button" onClick={this.cancelArticle}>Create Article</button>
-                            <button className="button" onClick={this.cancelArticle}>Ask Question</button>
+                        <div className="button-group">
+                            <Link to="/new_article" className="button link--button">Create Article</Link>
+                            <Link to="/new_question" className="button link--button">Ask Question</Link>
                         </div>
                     </div>
                 </div>

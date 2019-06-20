@@ -46,10 +46,11 @@ class App extends Component {
           <BrowserRouter>
           <Header></Header>
             <Switch>
-              <Route path="/recent" exact component={RecentPosts} />
-              <Route path="/login" exact component={Login} />
               {!this.state.token && <Redirect from="/new_article" to="/login" exact />}
               {this.state.token && <Route path="/new_article" exact component={ArticleForm} />}
+              {!this.state.token && <Route path="/login" exact component={Login} />}
+              {this.state.token && <Redirect from="/login" to="/" exact />}
+              <Route path="/" component={RecentPosts} />
             </Switch>
           </BrowserRouter>
         </AuthContext.Provider>

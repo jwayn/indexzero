@@ -17,7 +17,7 @@ export default class ArticleForm extends Component {
     }
 
     cancelArticle = () => {
-        //console.log(this.editor.current.getInstance.data);
+        this.props.history.push(`/`);
     }
 
     render() {
