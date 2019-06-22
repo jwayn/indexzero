@@ -1,4 +1,4 @@
-.post {
+.post-summary {
     width: 100%;
     display: flex;
     background-color: #EEEEEE;
@@ -6,48 +6,48 @@
     min-height: 125px;
 }
 
-.post__identity {
+.post-summary__identity {
     min-width: 125px;
     background-repeat: no-repeat;
     background-size: 75px;
     background-position: center;
 }
 
-.post__identity--asked {
+.post-summary__identity--asked {
     background-color: #D32F2F;
     background-image: url('../images/asked.svg');
 }
 
-.post__identity--answered {
+.post-summary__identity--answered {
     background-color: #388E3C;
     background-image: url('../images/answered.svg');
 }
 
-.post__identity--article {
+.post-summary__identity--article {
     background-color: #147CAB;
     background-image: url('../images/article.svg');
 }
 
-.post__information {
+.post-summary__information {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
 }
-.post__information__title {
+.post-summary__information__title {
     padding: 10px 20px;
     width: 100%;
     display: flex;
 }
 
-.post__information__title__heading {
+.post-summary__information__title__heading {
     font-size: 24px;
     font-weight: 600;
     color: #147CAB;
     line-height: 1;
 }
 
-.post__information__subinfo {
+.post-summary__information__subinfo {
     width: 100%;
     display: flex;
     justify-self: flex-end;
@@ -55,13 +55,13 @@
     flex-direction: row;
 }
 
-.post__information__subinfo__tags {
+.post-summary__information__subinfo__tags {
     display: flex;
     align-items: flex-end;
     padding: 10px;
 }
 
-.post__information__subinfo__tags__tag {
+.post-summary__information__subinfo__tags__tag {
     padding: 5px 10px;
     margin: 0 5px;
     background-color: #CFD8DC;
@@ -70,7 +70,7 @@
     font-size: 12px;
 }
 
-.post__information__subinfo__stats {
+.post-summary__information__subinfo__stats {
     padding: 10px;
     justify-self: flex-end;
     display: flex;
@@ -78,7 +78,7 @@
     flex-direction: column;
 }
 
-.post__information__subinfo__stats__interactions {
+.post-summary__information__subinfo__stats__interactions {
     display: flex;
     align-items: center;
     color: #668185;
@@ -87,20 +87,20 @@
     
 }
 
-.post__information__subinfo__stats__interactions__icon {
+.post-summary__information__subinfo__stats__interactions__icon {
     width: 18px;
     height: 18px;
     margin: 5px;
 }
 
-.post__information__subinfo__stats__action {
+.post-summary__information__subinfo__stats__action {
     display: flex;
     justify-content: flex-end;
     text-align: right;
     color: #668185;
 }
 
-.post__information__subinfo__stats__action__text__username {
+.post-summary__information__subinfo__stats__action__text__username {
     color: #147CAB;
     font-weight: 600;
 }

@@ -58,18 +58,45 @@ router.post('/', verifyToken, (req, res) => {
 });
 
 // Get a post by ID
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
     try
     {
-        Post.getOneById(req.params.id).then(post => {
-            res.json({
-                post
-            })
-        })
+        let post = await Post.getOneById(req.params.id);
+        let views = await Post.getPostViews(req.params.id);
+        post.views = await views.count;
+        let likes = await Post.getPostLikes(req.params.id);
+        post.likes = await likes.count;
+        res.json({post});
     } catch {
         const err = new Error('Problem retrieving post.');
         err.status = 500;
         next(err)
+    }
+});
+
+router.post('/:id/like', verifyToken, (req, res, next) => {
+    try 
+    {
+        Post.addPostLike(req.userData.user_id, req.params.id);
+        res.status = 200;
+    } catch {
+        const err = new Error('Database problem.');
+        err.status = 500;
+        next(err);
+    }
+});
+
+router.post('/:id/view', (req, res, next) => {
+    try 
+    {
+        let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+        Post.addPostView(ip, req.params.id);
+        res.status = 200;
+        res.send();
+    } catch {
+        const err = new Error('Database problem.');
+        err.status = 500;
+        next(err);
     }
 });
 
@@ -87,7 +114,7 @@ router.get('/:id/tags', (req, res, next) => {
         err.status = 500;
         next(err)
     }
-})
+});
 
 //update a post by id
 router.put('/:id', verifyToken, (req, res) => {

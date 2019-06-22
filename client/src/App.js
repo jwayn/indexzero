@@ -6,6 +6,7 @@ import ArticleForm from './components/ArticleForm';
 import Login from './components/Login';
 import Header from './components/Header';
 import AuthContext from './context/auth-context';
+import Post from './components/Post';
 
 import './App.css';
 
@@ -19,7 +20,6 @@ class App extends Component {
     //Implement remember me feature, (login.js)
     const token = localStorage.getItem('jwtToken');
     const userId = localStorage.getItem('userId');
-    console.log(token, userId);
     this.setState({token, userId});
   }
 
@@ -50,6 +50,7 @@ class App extends Component {
               {this.state.token && <Route path="/new_article" exact component={ArticleForm} />}
               {!this.state.token && <Route path="/login" exact component={Login} />}
               {this.state.token && <Redirect from="/login" to="/" exact />}
+              <Route path="/posts/:postId" component={Post}></Route>
               <Route path="/" component={RecentPosts} />
             </Switch>
           </BrowserRouter>

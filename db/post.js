@@ -4,6 +4,24 @@ module.exports = {
     getOneById: function(id) {
         return knex('posts').where('id', id).first();
     },
+    getPostLikes: function(id) {
+        return knex('posts_likes').count('post_id').where('post_id', id).first();
+    },
+    addPostLike: function(user_id, post_id) {
+        return knex('posts_likes').insert({post_id, user_id})
+    },
+    removePostLike: function(userId, postId) {
+        return knex('posts_likes').where({post_id, user_id}).del();
+    },
+    getPostViews: function(id){
+        return knex('posts_views').count('post_id').where('post_id', id).first();
+    },
+    addPostView: async function(address, post_id) {
+        let exists = await knex('posts_views').where({address, post_id});
+        if(exists.length == 0) {
+            return await knex('posts_views').insert({address, post_id}, ['address'])
+        }
+    },
     getAll: function() {
         return knex('posts').select();
     },

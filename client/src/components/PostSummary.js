@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import moment from 'moment';
-import './Post.css';
+import './PostSummary.css';
 import Tag from './Tag';
 import viewsIcon from '../images/views.svg';
 import commentsIcon from '../images/comments.svg';
@@ -19,6 +21,7 @@ export default class PostSummary extends Component {
     componentDidMount() {
         this.getAuthor(this.props.post.author);
         this.getTags(this.props.post.id);
+        this.getViewsAndLikes(this.props.post.id);
     }
 
     evaluateIdentity(identity){
@@ -34,6 +37,14 @@ export default class PostSummary extends Component {
         }
     }
 
+    getViewsAndLikes(id) {
+        fetch(`/api/posts/${id}`)
+        .then(res => res.json())
+        .then(post => {
+            this.setState({views: post.post.views, likes: post.likes});
+        });
+    }
+    
     getAuthor(id){
         fetch(`/api/users/id=${id}`)
         .then(res => res.json())
@@ -60,44 +71,43 @@ export default class PostSummary extends Component {
     render() {
         this.post = this.props.post;
         return(
-            <div className='post'>
-                <div className={`post__identity post__identity--${this.post.identity}`}></div>
-                <div className='post__information'>
-                    <div className="post__information__title">
-                        {/* TODO 
-                            Add react router to click the title to go to post
-                        */}
-                        <h2 className="post__information__title__heading">
-                            {this.post.summary}
-                        </h2>
+            <div className='post-summary'>
+                <div className={`post-summary__identity post-summary__identity--${this.post.identity}`}></div>
+                <div className='post-summary__information'>
+                    <div className="post-summary__information__title">
+                        <Link to={`/posts/${this.post.id}`}>
+                            <h2 className="post-summary__information__title__heading">
+                                {this.post.summary}
+                            </h2>
+                        </Link>
                     </div>
-                    <div className="post__information__subinfo">
-                        <div className="post__information__subinfo__tags">
+                    <div className="post-summary__information__subinfo">
+                        <div className="post-summary__information__subinfo__tags">
                             {this.state.tags.map(tag => {
                                 return this.renderTag(tag.name, tag.id);
                             })}
                         </div>
-                        <div className="post__information__subinfo__stats">
-                            <div className="post__information__subinfo__stats__interactions">
+                        <div className="post-summary__information__subinfo__stats">
+                            <div className="post-summary__information__subinfo__stats__interactions">
                                 {/* TODO 
                                     Add logic to properly gather the stats
                                 */}
-                                <img src={viewsIcon} className="post__information__subinfo__stats__interactions__icon" alt="Views"></img>
-                                <span className="post__information__subinfo__stats__interactions__views">{this.post.views || 0}</span>
-                                <img src={commentsIcon} className="post__information__subinfo__stats__interactions__icon" alt="Comments"></img>
-                                <span className="post__information__subinfo__stats__interactions__comments">{this.post.comments || 0}</span>
-                                <img src={likesIcon} className="post__information__subinfo__stats__interactions__icon" alt="Likes"></img>
-                                <span className="post__information__subinfo__stats__interactions__likes">{this.post.likes || 0}</span>
+                                <img src={viewsIcon} className="post-summary__information__subinfo__stats__interactions__icon" alt="Views"></img>
+                                <span className="post-summary__information__subinfo__stats__interactions__views">{this.state.views || 0}</span>
+                                <img src={commentsIcon} className="post-summary__information__subinfo__stats__interactions__icon" alt="Comments"></img>
+                                <span className="post-summary__information__subinfo__stats__interactions__comments">{this.state.comments || 0}</span>
+                                <img src={likesIcon} className="post-summary__information__subinfo__stats__interactions__icon" alt="Likes"></img>
+                                <span className="post-summary__information__subinfo__stats__interactions__likes">{this.state.likes || 0}</span>
                             </div>
-                            <div className="post__information__subinfo__stats__action">
-                                <p className="post__information__subinfo__stats__action__text">
+                            <div className="post-summary__information__subinfo__stats__action">
+                                <p className="post-summary__information__subinfo__stats__action__text">
                                     {/* TODO 
                                         Add react router to click the user to go to profile
                                     */}
                                     <span title={(this.post.identity === 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)) + ' ' + moment(this.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
                                         {`${this.post.identity === 'article' ? 'Created' : this.post.identity[0].toUpperCase() + this.post.identity.substring(1)} ${moment(this.post.created).fromNow()} by `} 
                                     </span>
-                                    <span className="post__information__subinfo__stats__action__text__username">
+                                    <span className="post-summary__information__subinfo__stats__action__text__username">
                                         {this.state.author}
                                     </span>
                                 </p>
