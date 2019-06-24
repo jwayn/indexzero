@@ -7,8 +7,10 @@
 .login-form {
     width: 100%;
     display: flex;
-    justify-content: center;
-    margin-top: 25vh;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    margin-top: 100px;
 }
 
 .login__button {
@@ -29,7 +31,7 @@
 .login__form {
     display: flex;
     flex-flow: column wrap;
-    max-width: 900px;
+    width: 400px;
 }
 
 .login__form input {
@@ -43,8 +45,83 @@
 }
 
 .login__form label {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: 5px;
     text-transform: uppercase;
+}
+
+.login-form__selector {
+    width: 400px;
+    margin-bottom: 25px;
+}
+
+.login-form__selector ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.login-form__selector__item {
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #141E2C;
+    transition: 0.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+
+.login-form__selector__item:hover {
+    border-bottom: 4px solid #141E2C;
+    font-weight: 600;
+}
+
+.login-form__selector__item--active {
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 4px solid #147CAB;
+    font-weight: 600;
+    color: #147CAB;
+}
+
+.login-form__signup-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-form__signup-container div {
+    margin: 15px;
+}
+
+.login-form__signup-container form {
+    margin: 15px;
+}
+
+.login-form__password-requirements {
+    border-left: 1px solid #141E2C;
+    box-sizing: border-box;
+    padding: 0 15px 15px 15px;
+}
+
+.login-form__password-requirements ul {
+    list-style-type: none;
+}
+
+.login-form__password-requirements ul li {
+    padding: 10px 0 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.login-form__password-requirements__icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
