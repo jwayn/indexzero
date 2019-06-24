@@ -125,3 +125,7 @@
     height: 20px;
     margin-right: 10px;
 }
+
+.input--invalid {
+    box-shadow: 0 0 5px #e53935;
+}
