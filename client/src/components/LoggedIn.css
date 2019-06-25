@@ -1,0 +1,44 @@
+.logged-in__dropdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 65px;
+    border-radius: 5px;
+    background-color: #334154;
+    height: 42px;
+    margin: 0px 5px;
+}
+
+.logged-in__dropdown__avatar {
+    width: 34px;
+    height: 34px;
+    background-color: #EBE4EE;
+    border-radius: 50%;
+    border: 1px solid #EBE4EE;
+}
+
+.logged-in__dropdown__button {
+    cursor: pointer;
+    color: #EBE4EE;
+}
+
+.logged-in__dropdown__menu {
+    background-color: #EBE4EE;
+    position: absolute;
+    top: 50px;
+    right: 25px;
+    list-style-type: none;
+    box-shadow: 0 0 15px #141E2C;
+}
+
+.logged-in__dropdown__menu__item {
+    padding: 10px;
+    width: 200px;
+    cursor: pointer;
+    border-bottom: 2px solid #334154;
+}
+
+.logged-in__dropdown__menu__item:hover {
+    border-bottom: 2px solid #147CAB;
+    color: #147CAB;
+}

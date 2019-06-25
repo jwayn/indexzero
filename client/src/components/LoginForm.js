@@ -44,7 +44,6 @@ export default class LoginForm extends Component {
             const res = await rawRes.json();
             if (res.token) {
                 this.context.login(res.token, res.userId);
-                this.props.history.push(`/recent`);
             } else {
                 // Set state for failed auth
             }     

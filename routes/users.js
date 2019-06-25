@@ -12,9 +12,11 @@ router.get('/id=:id', (req, res) => {
         if(!user) return res.json({message: 'No user found.'});
         return res.json({
             displayName: user.display_name,
-            id: user.id,
+            userId: user.id,
             email: user.email,
-            score: user.score
+            avatarUrl: user.avatar_url,
+            valid: user.valid,
+            createdAt: user.created_at
         });
     })
 });
