@@ -33,6 +33,9 @@ a {
     min-width: 140px;
     height: 40px;
     margin: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .button:hover {
@@ -112,4 +115,20 @@ a {
 
 .recent-posts {
     width: 100%;
+}
+
+.donut {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 0.3rem solid #CFD8DC;
+    border-top-color: #147CAB;
+    animation: 1.5s spin infinite linear;
+    margin: 0;
+}
+  
+@keyframes spin {
+to {
+    transform: rotate(360deg);
+}
 }

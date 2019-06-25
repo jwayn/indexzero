@@ -104,7 +104,7 @@
 }
 
 .login-form__password-requirements {
-    border-left: 1px solid #141E2C;
+    border-left: 1px solid #CFD8DC;
     box-sizing: border-box;
     padding: 0 15px 15px 15px;
 }
@@ -128,4 +128,52 @@
 
 .input--invalid {
     box-shadow: 0 0 5px #e53935;
+}
+
+.login-form__info {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 25px;
+    min-width: 400px;
+}
+
+.login-form__info__icon {
+    border: 1px solid #CFD8DC;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 10px;
+    border-right: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form__info__icon img{
+    height: 75px;
+    width: 75px;
+}
+
+.login-form__info__content {
+    border: 1px solid #CFD8DC;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.login-form__info__close {
+    position: relative;
+    top: 10px;
+    left: -30px;
+    height: 20px;
+    cursor: pointer;
+    
+}
+
+.login-form__info__close img {
+    width: 20px;
+    height: 20px;
 }

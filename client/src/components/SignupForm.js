@@ -23,13 +23,16 @@ export default class SignupForm extends Component {
             passUpper: false,
             passLower: false,
             passSpecial: false,
-            passMatch: false
+            passMatch: false,
+            loaderActive: false,
+            passEmpty: true,
+            emailEmpty: true
         }
     }
 
     validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
+        return re.test(String(email).toLowerCase()) || email.trim().length === 0;
     }
 
     handleSignupEmailChange = (event) => {
@@ -39,11 +42,23 @@ export default class SignupForm extends Component {
         } else {
             this.setState({emailValid: false})
         }
+
+        if(email.trim().length > 0) {
+            this.setState({emailEmpty: false})
+        } else {
+            this.setState({emailEmpty: true})
+        }
     }
 
     handleSignupPasswordChange = (event) => {
         const password = this.passwordEl.current.value;
         const passwordVer = this.passwordVerEl.current.value;
+        if(password.trim().length > 0 && passwordVer.trim().length > 0) {
+            this.setState({passEmpty: false})
+        } else {
+            this.setState({passEmpty: true})
+        }
+
         if(password === passwordVer) {
             this.setState({passMatch: true});
         } else {
@@ -93,6 +108,7 @@ export default class SignupForm extends Component {
             return;
         }
 
+        this.setState({loaderActive: true});
         if (this.validateEmail(email)) {
             const body = JSON.stringify({
                 email: email,
@@ -105,23 +121,36 @@ export default class SignupForm extends Component {
                 headers: {
                     'Content-Type' : 'application/json'
                 }
-            })
-            if(rawRes.status == 200) {
-                const res = await rawRes.json();
-                if (res.token) {
-                    this.context.login(res.token, res.userId);
-                    localStorage.setItem('jwtToken', res.token);
-                    localStorage.setItem('userId', res.userId);
-                    this.props.history.push(`/recent`);
+            }).then(rawRes => {
+                this.setState({loaderActive: false});
+                return rawRes.json();
+            }).then(res => {
+                if(res.status == 200) {
+                    console.log('Creating the account I guess...');
+                    if (res.token) {
+                        this.context.login(res.token, res.userId);
+                        localStorage.setItem('jwtToken', res.token);
+                        localStorage.setItem('userId', res.userId);
+                        this.props.history.push(`/recent`);
+                    }
+                } else {
+                    console.log(res.message);
+                    this.props.updateInfo(res.message);
                 }
-            }
+            })
         } else {
-            this.setState({infoText: 'Invalid email.'})
+            console.log('Invalid email.');
+            this.props.updateInfo('Invalid email.');
         }
     }
 
     passwordValid = () => {
-        return this.state.passLength && this.state.passMatch && this.state.passLower && this.state.passUpper && this.state.passSpecial && this.state.passNum;
+        return this.state.passLength && 
+               this.state.passMatch && 
+               this.state.passLower && 
+               this.state.passUpper && 
+               this.state.passSpecial && 
+               this.state.passNum;
     }
 
     render() {
@@ -129,15 +158,15 @@ export default class SignupForm extends Component {
             <div className="login-form__signup-container">
                 <form className="login__form">
                     <label>Email</label>
-                    <input type="email" name="email" className={this.state.emailValid ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupEmailChange} ref={this.emailEl} autoFocus />
+                    <input type="email" name="email" className={this.state.emailValid || this.state.emailEmpty ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupEmailChange} ref={this.emailEl} autoFocus />
                     <label>Password</label>
-                    <input type="password" name="password" className={this.passwordValid() ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupPasswordChange} ref={this.passwordEl} />
-                    <label>Password (again)</label>
-                    <input type="password" name="passwordVer" className={this.passwordValid() ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupPasswordChange} ref={this.passwordVerEl} />
+                    <input type="password" name="password" className={this.passwordValid() || this.state.passEmpty ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupPasswordChange} ref={this.passwordEl} />
+                    <label>Verify Password</label>
+                    <input type="password" name="passwordVer" className={this.passwordValid() || this.state.passEmpty ? 'input--valid' : 'input--invalid'} onChange={this.handleSignupPasswordChange} ref={this.passwordVerEl} />
                     <label>Display Name</label>
                     <input type="text" name="displayName" ref={this.displayName} />
                     <div className="button-group">
-                        <button className="button" onClick={this.signUpHandler}>Sign Up</button>
+                        <button className="button" onClick={this.signUpHandler}>Sign Up {this.state.loaderActive && <div className="donut" />}</button>
                     </div>
                 </form>
                 <div className="login-form__password-requirements">

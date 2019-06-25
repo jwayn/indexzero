@@ -51,6 +51,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
+    console.log('Request!');
     if(validUser(req.body)) {
         User.getOneByEmail(req.body.email)
         .then(user => {
@@ -60,8 +61,8 @@ router.post('/signup', (req, res, next) => {
                     const user = {
                         email: req.body.email,
                         password: hash,
-                        created_at: new Date(),
-                        score: 0
+                        display_name: req.body.displayName,
+                        created_at: new Date()
                     };
 
                     User.create(user)
