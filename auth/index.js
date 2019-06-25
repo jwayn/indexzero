@@ -35,7 +35,7 @@ router.post('/login', (req, res, next) => {
                         res.status = 403
                         res.json({
                             status: 403,
-                            message: 'Forbidden.'
+                            message: 'Email or password incorrect.'
                         })
                     }
                 });
@@ -66,21 +66,23 @@ router.post('/signup', (req, res, next) => {
                     };
 
                     User.create(user)
-                    .then(id => {
-                        res.json({
-                            id,
-                            message: 'User created.'
+                    .then(user => {
+                        jwt.sign({user_id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                            res.json({
+                                token,
+                                userId: user.id
+                            });
                         });
                     });
                 });
             } else {
-                const err = new Error('User already exists.');
+                const err = new Error('A user with that email address already exists.');
                 err.status = 400;
                 next(err)
             }
         });
     } else {
-        const err = new Error('Invalid user.');
+        const err = new Error('Invalid email or password.');
         err.status = 400;
         next(err)
     }

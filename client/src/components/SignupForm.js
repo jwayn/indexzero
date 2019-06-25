@@ -104,7 +104,8 @@ export default class SignupForm extends Component {
         const displayName = this.displayName.current.value;
 
         if(email.trim().length === 0 || password.trim().length === 0
-            || passwordVer.trim().length === 0 || displayName.trim().length === 0) {
+            || passwordVer.trim().length === 0 || displayName.trim().length === 0 || !this.passwordValid()) {
+            this.props.updateInfo('Form invalid.')
             return;
         }
 
@@ -125,21 +126,14 @@ export default class SignupForm extends Component {
                 this.setState({loaderActive: false});
                 return rawRes.json();
             }).then(res => {
-                if(res.status == 200) {
-                    console.log('Creating the account I guess...');
-                    if (res.token) {
-                        this.context.login(res.token, res.userId);
-                        localStorage.setItem('jwtToken', res.token);
-                        localStorage.setItem('userId', res.userId);
-                        this.props.history.push(`/recent`);
-                    }
+                if (res.token) {
+                    this.context.login(res.token, res.userId);
                 } else {
-                    console.log(res.message);
                     this.props.updateInfo(res.message);
+                    this.emailEl.current.value = '';
                 }
             })
         } else {
-            console.log('Invalid email.');
             this.props.updateInfo('Invalid email.');
         }
     }

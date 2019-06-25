@@ -12,7 +12,9 @@ export default class LoginForm extends Component {
         this.emailEl = React.createRef();
         this.passwordEl = React.createRef();
 
-        this.state = {}
+        this.state = {
+            loginAttempts: 0
+        }
     }
 
     validateEmail(email) {
@@ -20,10 +22,15 @@ export default class LoginForm extends Component {
         return re.test(String(email).toLowerCase());
     }
 
+    incrementAttempts = () => {
+        this.setState({loginAttempts: this.state.loginAttempts + 1});
+    }
+
     loginHandler = async (event) => {
         event.preventDefault();
         const email = this.emailEl.current.value;
         const password = this.passwordEl.current.value;
+        this.incrementAttempts();
 
         if(email.trim().length === 0 || password.trim().length === 0) {
             return;
@@ -34,33 +41,44 @@ export default class LoginForm extends Component {
             email: email,
             password: password
         });
-            const rawRes = await fetch('/api/auth/login', {
+            await fetch('/api/auth/login', {
                 method: 'POST',
                 body,
                 headers: {
                     'Content-Type' : 'application/json'
                 }
+            }).then(rawRes => {
+                return rawRes.json();
+            }).then(res => {
+                console.log(res);
+                if (res.token) {
+                    this.context.login(res.token, res.userId);
+                } else {
+                    this.props.updateInfo(res.message);
+                    this.passwordEl.current.value = '';
+                }     
             })
-            const res = await rawRes.json();
-            if (res.token) {
-                this.context.login(res.token, res.userId);
-            } else {
-                // Set state for failed auth
-            }     
         }
     }
 
     render() {
         return (
-            <form className="login__form">
-                <label>Email</label>
-                <input type="email" name="email" ref={this.emailEl} autoFocus />
-                <label>Password</label>
-                <input type="password" name="password" ref={this.passwordEl} />
-                <div className="button-group">
-                    <button className="button" onClick={this.loginHandler}>Login</button>
+            <div>
+                <form className="login__form">
+                    <label>Email</label>
+                    <input type="email" name="email" ref={this.emailEl} autoFocus />
+                    <label>Password</label>
+                    <input type="password" name="password" ref={this.passwordEl} />
+                    <div className="button-group">
+                        <button className="button" onClick={this.loginHandler}>Login</button>
+                    </div>
+                </form>
+                {this.state.loginAttempts > 3 && 
+                <div className="login__form__forgot-password">
+                    Forgot your password?
                 </div>
-            </form>
+                }
+            </div>
         );
     }
 }

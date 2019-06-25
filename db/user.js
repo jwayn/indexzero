@@ -8,8 +8,12 @@ module.exports = {
         return knex('users').where('email', email).first();
     },
     create: function(user) {
-        return knex('users').insert(user, 'id').then(ids => {
-            return ids[0];
+        return knex('users').insert(user, ['id', 'role']).then(userData => {
+            console.log(userData);
+            return {
+                id: userData[0].id,
+                role: userData[0].role
+            };
         });
     }
 };
