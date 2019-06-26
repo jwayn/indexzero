@@ -1,7 +1,11 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto-random-string');
 
+const config = require('../config');
+
+const mailer = require('../mailer');
 const User = require('../db/user');
 
 const router = express.Router();
@@ -67,10 +71,30 @@ router.post('/signup', (req, res, next) => {
 
                     User.create(user)
                     .then(user => {
-                        jwt.sign({user_id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
-                            res.json({
-                                token,
-                                userId: user.id
+                        console.log(user);
+                        const key = crypto({length: 40});
+                        User.createVerification(user.id, key, user.email).then(returnData => {
+                            const mailOpts = {
+                                from: config.email.from,
+                                to: user.email,
+                                subject: 'Verify your IndexZer0 account.',
+                                text : `Please visit https://www.indexzero.com/verify/${returnData.key} to verify your account.`,
+                                html : `<p>Please visit <a href="https://www.indexzero.com/verify/${returnData.key}">click here</a> to verify your IndexZer0 account.</p>`
+                            };
+
+                            mailer.sendMail(mailOpts, (err, response) => {
+                                if (err) {
+                                    console.log(err)
+                                } else {
+                                    console.log('Mail sent: ', response);
+                                }
+                            });
+                        }).then(() => {
+                            jwt.sign({user_id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                                res.json({
+                                    token,
+                                    userId: user.id
+                                });
                             });
                         });
                     });
@@ -87,5 +111,29 @@ router.post('/signup', (req, res, next) => {
         next(err)
     }
 });
+
+router.put('/verify', (req, res, next) => {
+    let key = req.body.key;
+    if(key) {
+        User.getOneByVerificationKey(key)
+        .then(record => {
+            if(record) {
+                User.update(record.user_id, {active: true}).then(() => {
+                    User.deleteActivationRecord(record.user_id).then(() => {
+                        res.status(200).send();
+                    })
+                });
+            } else {
+                res.status(403).json({message: 'Verification key invalid.'})
+            }
+        })
+    }
+})
+
+router.get('/email_test', (req, res) => {
+    
+    
+    
+})
 
 module.exports = router;

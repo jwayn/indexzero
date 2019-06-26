@@ -62,8 +62,6 @@ router.get('/:id', async (req, res, next) => {
     try
     {
         let post = await Post.getOneById(req.params.id);
-        let views = await Post.getPostViews(req.params.id);
-        post.views = await views.count;
         let likes = await Post.getPostLikes(req.params.id);
         post.likes = await likes.count;
         res.json({post});
@@ -86,11 +84,13 @@ router.post('/:id/like', verifyToken, (req, res, next) => {
     }
 });
 
-router.post('/:id/view', (req, res, next) => {
+router.put('/:id/view', async (req, res, next) => {
     try 
     {
         let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-        Post.addPostView(ip, req.params.id);
+        const post = await Post.getOneById(req.params.id);
+        console.log(post.views + 1);
+        Post.update(req.params.id, {views: post.views + 1});
         res.status = 200;
         res.send();
     } catch {
@@ -157,5 +157,7 @@ router.delete('/:id', verifyToken, (req, res) => {
         }
     });
 });
+
+
 
 module.exports = router;

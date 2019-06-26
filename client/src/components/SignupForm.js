@@ -112,9 +112,9 @@ export default class SignupForm extends Component {
         this.setState({loaderActive: true});
         if (this.validateEmail(email)) {
             const body = JSON.stringify({
-                email: email,
-                password: password,
-                display_name: displayName
+                email,
+                password,
+                displayName
             });
             const rawRes = await fetch('/api/auth/signup', {
                 method: 'POST',
