@@ -78,8 +78,8 @@ router.post('/signup', (req, res, next) => {
                                 from: config.email.from,
                                 to: user.email,
                                 subject: 'Verify your IndexZer0 account.',
-                                text : `Please visit https://www.indexzero.com/verify/${returnData.key} to verify your account.`,
-                                html : `<p>Please visit <a href="https://www.indexzero.com/verify/${returnData.key}">click here</a> to verify your IndexZer0 account.</p>`
+                                text : `Please visit ${config.url}/verify/${returnData.key} to verify your account.`,
+                                html : `<p>Please visit <a href="${config.url}/verify/${returnData.key}">click here</a> to verify your IndexZer0 account.</p>`
                             };
 
                             mailer.sendMail(mailOpts, (err, response) => {

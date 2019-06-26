@@ -89,3 +89,4 @@ typings/
 
 # User added
 nodemon.json
+config.js
