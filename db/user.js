@@ -31,6 +31,6 @@ module.exports = {
         return knex('user_verification').where({user_id}).delete();
     },
     update: function(id, user) {
-        return knex('users').update(user).where({id});
+        return knex('users').where({id}).update(user);
     }
 };

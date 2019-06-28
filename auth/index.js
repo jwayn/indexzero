@@ -1,10 +1,10 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto-random-string');
+const createError = require('http-errors');
 
 const config = require('../config');
-
+const verifyToken = require('../middleware/verify-token');
 const mailer = require('../mailer');
 const User = require('../db/user');
 
@@ -19,6 +19,15 @@ function validUser(user) {
                         user.password.trim().length >= 6;
 
     return validEmail && validPassword;
+}
+
+function generateToken() {
+    var buf = new Buffer.alloc(16);
+    for (var i = 0; i < buf.length; i++) {
+        buf[i] = Math.floor(Math.random() * 256);
+    }
+    var id = buf.toString('base64');
+    return id;
 }
 
 router.post('/login', (req, res, next) => {
@@ -72,7 +81,7 @@ router.post('/signup', (req, res, next) => {
                     User.create(user)
                     .then(user => {
                         console.log(user);
-                        const key = crypto({length: 40});
+                        const key = generateToken();
                         User.createVerification(user.id, key, user.email).then(returnData => {
                             const mailOpts = {
                                 from: config.email.from,
@@ -124,16 +133,55 @@ router.put('/verify', (req, res, next) => {
                     })
                 });
             } else {
-                res.status(403).json({message: 'Verification key invalid.'})
+                next(createError(403, 'Verification key is invalid.'));
             }
         })
     }
-})
+});
 
-router.get('/email_test', (req, res) => {
-    
-    
-    
+router.put('/reset-password', verifyToken, (req, res, next) => {
+    try {
+        if(req.body.oldPassword) {
+            User.getOneById(req.userData.user_id)
+            .then(user => {
+                if(user) {
+                    // Verify user password and change it to new password'
+                    bcrypt.compare(req.body.oldPassword, user.password)
+                    .then(result => {
+                        if(result) {
+                            // Change pw to new pw
+                            bcrypt.hash(req.body.newPassword, 10)
+                            .then(hash => {
+                                console.log(hash);
+                                console.log(user.id);
+                                User.update(user.id, {password: hash})
+                                .then(() => {
+                                    res.status(200).json({message: 'Password updated.'});
+                                });
+                            });
+                        } else {
+                            createError(403, 'Password incorrect.');
+                        };
+                    });
+                } else {
+                    next(createError(403, 'Forbidden.'))
+                }
+            })
+        } else {
+            next(createError(401, 'User sent insufficient data.'));
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/forgot-password', (req, res, next) => {
+    // Insert email/key into reset_password table
+    // Send user an email with link to reset password if email exists in the database
+});
+
+router.put('/forgot-password', (req, res, next) => {
+    // Reset the users password if their key matches and is < 1 hour old
 })
 
 module.exports = router;
