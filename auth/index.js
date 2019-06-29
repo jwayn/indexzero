@@ -113,8 +113,7 @@ router.put('/verify', async (req, res, next) => {
         if(record) {
             await User.update(record.user_id, {active: true});
             await User.deleteActivationRecord(record.user_id);
-
-            res.status(200).send();
+            res.status(200).json({message: 'User verified.'});
         } else {
             next(createError(403, 'Verification key is invalid.'));
         }
