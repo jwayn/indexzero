@@ -107,6 +107,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.put('/verify', async (req, res, next) => {
+    console.log(req.body);
     let key = req.body.key;
     if(key) {
         const record = await User.getOneByVerificationKey(key)
