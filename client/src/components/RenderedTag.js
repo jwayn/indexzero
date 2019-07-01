@@ -5,8 +5,8 @@ export default class RenderedTag extends Component {
         super(props);
     }
 
-    removeTag = () => {
-        console.log('Tag removed');
+    removeTag = event => {
+        this.props.removeTag(this.props.index);
     }
 
     render() {

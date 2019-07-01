@@ -43,10 +43,7 @@ export default class ArticleForm extends Component {
                     <label className="input__label">Body</label>
                     <Editor summary={this.state.summary} />
                 </div>
-                <div className="form-container__group">
-                    <label className="input__label">Tags</label>
-                    <TagEditor />
-                </div>
+                <TagEditor />
                 <button className="button" onClick={this.submitArticle}>Submit</button>
             </div>
           </div>
