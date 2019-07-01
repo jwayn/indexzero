@@ -42,6 +42,7 @@
     color: #141E2C;
     font-weight: 400;
     padding: 15px 10px;
+    border: 1px solid #BDBDBD;
 }
 
 .login__form label {
