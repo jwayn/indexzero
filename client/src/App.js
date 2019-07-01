@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import AuthContext from './context/auth-context';
 import Post from './components/Post';
+import Verify from './components/Verify';
 
 import './App.css';
 
@@ -68,6 +69,7 @@ class App extends Component {
               {this.state.token && <Redirect from="/login" to="/" exact={true} />}
               {this.state.token && <Route path="/new_article" exact component={ArticleForm} />}
               {!this.state.token && <Redirect from="/new_article" to="/login" exact={true} />}
+              <Route path="/verify/:key" component={Verify} exact />
               <Route path="/posts/:postId" component={Post} exact />
               <Route path="/" component={RecentPosts} exact />
               <Route component={PageNotFound} />
