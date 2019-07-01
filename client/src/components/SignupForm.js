@@ -23,7 +23,6 @@ export default class SignupForm extends Component {
             passUpper: false,
             passLower: false,
             passSpecial: false,
-            passMatch: false,
             loaderActive: false,
             passEmpty: true,
             emailEmpty: true
@@ -166,12 +165,42 @@ export default class SignupForm extends Component {
                 <div className="login-form__password-requirements">
                     <h3>Password must meet these requirements: </h3>
                     <ul>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passLength ? inputValid : inputInvalid}></img> Greater than six characters</li>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passUpper ? inputValid : inputInvalid}></img> At least one uppercase letter</li>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passLower ? inputValid : inputInvalid}></img> At least one lowercase letter</li>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passNum ? inputValid : inputInvalid}></img> At least one number</li>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passSpecial ? inputValid : inputInvalid}></img> At least one special character</li>
-                        <li><img className="login-form__password-requirements__icon" src={this.state.passMatch ? inputValid : inputInvalid}></img> Passwords must match</li>
+                        <li>
+                            <img className="login-form__password-requirements__icon" 
+                            src={this.state.passLength ? inputValid : inputInvalid}
+                            alt={this.state.passLength ? "Password length requirement met." : "Password length requirement not met."} />
+                            Greater than six characters
+                        </li>
+                        <li>
+                            <img className="login-form__password-requirements__icon" 
+                            src={this.state.passUpper ? inputValid : inputInvalid}
+                            alt={this.state.passUpper ? "At least one uppercase letter requirement met." : "At least one uppercase letter requirement not met."} />
+                            At least one uppercase letter
+                        </li>
+                        <li>
+                            <img className="login-form__password-requirements__icon"
+                            src={this.state.passLower ? inputValid : inputInvalid}
+                            alt={this.state.passLower ? "At least one lowercase letter requirement met." : "At least one lowercase letter requirement not met."} />
+                            At least one lowercase letter
+                        </li>
+                        <li>
+                            <img className="login-form__password-requirements__icon" 
+                            src={this.state.passNum ? inputValid : inputInvalid}
+                            alt={this.state.passNum ? "Password must contain a number requirement met." : "Password must contain a number requirement not met."} />
+                            At least one number
+                        </li>
+                        <li>
+                            <img className="login-form__password-requirements__icon" 
+                            src={this.state.passSpecial ? inputValid : inputInvalid}
+                            alt={this.state.passSpecial ? "Password must contain a special character requirement met." : "Password must contain a special character requirement not met."} />
+                            At least one special character
+                        </li>
+                        <li>
+                            <img className="login-form__password-requirements__icon" 
+                            src={this.state.passMatch ? inputValid : inputInvalid}
+                            alt={this.state.passMatch ? "Passwords must match requirement met." : "Passwords must match requirement not met."} />
+                            Passwords must match
+                        </li>
                     </ul>
                 </div>
             </div>
