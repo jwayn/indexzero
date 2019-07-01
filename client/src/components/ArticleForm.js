@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
-import 'codemirror/lib/codemirror.css';
-import 'tui-editor/dist/tui-editor.min.css';
-import 'tui-editor/dist/tui-editor-contents.min.css';
-import 'highlight.js/styles/github.css';
-import { Editor } from '@toast-ui/react-editor'
+import Editor from './Editor';
 
 export default class ArticleForm extends Component {
     constructor(props) {
-        super();
-        this.editorRef = React.createRef();
+        super(props);
+        
+        this.state = {
+            summary: ''
+        }
     }
 
     submitArticle = () => {
-        console.log(this.editorRef.current.getInstance());
         console.log('Hello!');
     }
 
     cancelArticle = () => {
         this.props.history.push(`/`);
+    }
+
+    onSummaryChange = event => {
+        this.setState({summary: event.target.value});
     }
 
     render() {
@@ -34,17 +36,11 @@ export default class ArticleForm extends Component {
             <div className="form-container">
                 <div className="form-container__group">
                     <label className="input__label">Title</label>
-                    <input className="input__text-box" placeholder="Provide a summary of your article."></input>
+                    <input className="input__text-box" onChange={this.onSummaryChange} placeholder="Provide a summary of your article."></input>
                 </div>
                 <div className="form-container__group editor">
                     <label className="input__label">Body</label>
-                    <Editor
-                    previewStyle="vertical"
-                    height="600px"
-                    initialEditType="markdown"
-                    usageStatistics="false"
-                    className="editor"
-                    />
+                    <Editor summary={this.state.summary} />
                 </div>
                 <div className="form-container__group">
                     <label className="input__label">Tags</label>
