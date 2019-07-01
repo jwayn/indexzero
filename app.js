@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 
-//middleware
+//routes
 app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/posts', posts);
