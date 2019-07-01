@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Editor from './Editor';
+import TagEditor from './TagEditor';
 
 export default class ArticleForm extends Component {
     constructor(props) {
@@ -44,7 +45,7 @@ export default class ArticleForm extends Component {
                 </div>
                 <div className="form-container__group">
                     <label className="input__label">Tags</label>
-                    <input className="input__text-box"></input>
+                    <TagEditor />
                 </div>
                 <button className="button" onClick={this.submitArticle}>Submit</button>
             </div>
