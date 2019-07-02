@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
+import './RenderedTag.css';
 
 export default class RenderedTag extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     removeTag = event => {
         this.props.removeTag(this.props.index);

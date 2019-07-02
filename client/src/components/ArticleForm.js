@@ -1,18 +1,68 @@
 import React, { Component } from 'react';
 import Editor from './Editor';
 import TagEditor from './TagEditor';
+import AuthContext from '../context/auth-context';
 
 export default class ArticleForm extends Component {
+
+    static contextType = AuthContext;
+
     constructor(props) {
         super(props);
         
         this.state = {
-            summary: ''
+            summary: '',
+            body: '',
+            tags: []
         }
     }
 
-    submitArticle = () => {
-        console.log('Hello!');
+    submitArticle = async () => {
+        console.log(this.state.tags);
+        console.log(this.state.body);
+        console.log(this.context.token);
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Bearer ' + this.context.token
+        }
+        
+        const body = {
+            post: {
+                summary: this.state.summary,
+                content: this.state.body,
+                identity: 'article'
+            }, 
+            tags: this.state.tags.map(tag => tag.name)
+        }
+
+        const options = {
+            headers,
+            method: 'POST',
+            body: JSON.stringify(body)
+        };
+
+        console.log(options);
+
+        const returnedPost = await fetch('/api/posts/', options);
+
+        console.log(returnedPost);
+    }
+
+    addTag = (event) => {
+        const tag = event.target.value;
+        if(tag.charAt(tag.length - 1) === ' ' && tag.charAt(0) !== ' ') {
+            this.setState(prevState => ({
+                tags: [...prevState.tags, {name: tag.trim(), key: this.state.tags.length}]
+            }));
+            event.target.value = '';
+        }
+    }
+
+    removeTag = index => {
+        let tags = [...this.state.tags];
+        let tagToDelete = tags.find(tag => tag.key === index);
+        tags.splice(tags.indexOf(tagToDelete), 1);
+        this.setState({tags})
     }
 
     cancelArticle = () => {
@@ -21,6 +71,10 @@ export default class ArticleForm extends Component {
 
     onSummaryChange = event => {
         this.setState({summary: event.target.value});
+    }
+
+    bodyChange = rawText => {
+        this.setState({body: rawText});
     }
 
     render() {
@@ -41,9 +95,9 @@ export default class ArticleForm extends Component {
                 </div>
                 <div className="form-container__group editor">
                     <label className="input__label">Body</label>
-                    <Editor summary={this.state.summary} />
+                    <Editor summary={this.state.summary} bodyChange={this.bodyChange} />
                 </div>
-                <TagEditor />
+                <TagEditor tags={this.state.tags} addTag={this.addTag} renderTags={this.addTag} removeTag={this.removeTag} />
                 <button className="button" onClick={this.submitArticle}>Submit</button>
             </div>
           </div>

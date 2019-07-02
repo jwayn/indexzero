@@ -1,0 +1,36 @@
+.tags__rendered {
+    display: flex;
+    margin: 10px 0;
+}
+
+.rendered-tag {
+    margin: 0 5px;
+    padding: 3px 5px 3px 10px;
+    border-radius: 4px;
+    background-color: #CFD8DC;
+    color: #141E2C;
+    display: flex;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.rendered-tag__name {
+    padding-right: 5px;
+    font-weight: 600;
+}
+
+.rendered-tag__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #141E2C;
+    border-radius: 4px;
+    background-color: #EEEEEE;
+    width: 20px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.rendered-tag__remove:hover {
+    background-color: #FFCDD2;
+    cursor: pointer;
+}

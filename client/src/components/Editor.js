@@ -31,6 +31,7 @@ export default class Editor extends Component {
 
     onEditorChange = event => {
         this.setState({markdownPreview: md.render(event.target.value)})
+        this.props.bodyChange(event.target.value);
     }
 
     render() {
