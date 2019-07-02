@@ -22,6 +22,10 @@ module.exports = {
             return await knex('posts_views').insert({address, post_id}, ['address'])
         }
     },
+    addPostTag: function(tag_id, post_id) {
+        return knex('tags_posts')
+            .insert({tag_id, post_id});
+    },
     getAll: function() {
         return knex('posts').select();
     },
@@ -40,7 +44,7 @@ module.exports = {
                 content: post.content,
                 created: new Date(),
                 identity: post.identity
-            }, ['summary', 'content']
+            }, ['summary', 'content', 'id']
             ).then(posts => {
             return posts[0];
         });

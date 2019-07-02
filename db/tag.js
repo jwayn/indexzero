@@ -2,7 +2,10 @@ const knex = require('./connection');
 
 module.exports = {
     getOneById: function(id) {
-        return knex('tags').where('id', id).first();
+        return knex('tags').where({id}).first();
+    },
+    getOneByName: function(name) {
+        return knex('tags').where({name}).first();
     },
     getAll: function() {
         return knex('tags').select();
@@ -16,30 +19,13 @@ module.exports = {
     getAllLimited: function(limit) {
         return knex('tags').select().limit(limit);
     },
-    create: function(user_id, post) {
-        return knex('tags').insert(
-            {
-                author: user_id,
-                summary: post.summary,
-                content: post.content,
-                created: new Date(),
-                score: 0
-            }, ['summary', 'content']
-            ).then(posts => {
-            return posts[0];
-        });
+    create: function(name) {
+        return knex('tags').insert({name})
+            .returning(['id']);
     },
-    delete: function(post_id) {
-        return knex('posts')
-            .where({id: post_id})
+    delete: function(id) {
+        return knex('tags')
+            .where({id})
             .del()
-    },
-    update: function(post_id, post) {
-        return knex('posts')
-            .where({id: post_id})
-            .update(post)
-            .then(post => {
-                return post;
-            });
     }
 };

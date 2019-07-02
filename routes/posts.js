@@ -34,25 +34,30 @@ router.get('/recent/limit=:limit', (req, res, next) => {
 });
 
 // Create a post
-router.post('/', verifyToken, (req, res) => {
+router.post('/', verifyToken, async (req, res, next) => {
     try {
         if(req.body.post){
-            Post.create(req.userData.user_id, req.body.post)
-            .then(post => {
-                res.json({
-                    post,
-                    message: 'Post created!'
+            const post = await Post.create(req.userData.user_id, req.body.post);
+            if(req.body.tags){
+                //Iterate through tags and check if they exist
+                req.body.tags.forEach(async (tag) => {
+                    try {
+                        const tagExists = await Tag.getOneByName(tag);
+                        if(tagExists) {
+                            //If they do, add tag/post to association table
+                            await Post.addPostTag(tagExists.id, post.id)
+                        } else {
+                            //Otherwise create tag and then add tag/post to association table
+                            const newTag = await Tag.create(tag);
+                            await Post.addPostTag(newTag[0].id, post.id);
+                        }
+                    } catch (err) {
+                        next(err);
+                    }
                 });
-            });
-
-            /* TODO: Check database for tags
-            // If tag exists, add tagid + post id to tags_posts
-            // Otherwise create new tag, and add tag id + post id to tags_posts
-            */
-        };
-    } catch {
-        const err = new Error('Problem creating post.');
-        err.status = 500;
+            }
+        }
+    } catch (err) {
         next(err)
     }
 });
@@ -89,10 +94,8 @@ router.put('/:id/view', async (req, res, next) => {
     {
         let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
         const post = await Post.getOneById(req.params.id);
-        console.log(post.views + 1);
         Post.update(req.params.id, {views: post.views + 1});
-        res.status = 200;
-        res.send();
+        res.sendStatus(200);
     } catch {
         const err = new Error('Database problem.');
         err.status = 500;
