@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PostSummary from './PostSummary';
+import Viewer from './Viewer';
 
-import { Viewer } from '@toast-ui/react-editor'
 import moment from 'moment';
 import viewsIcon from '../images/views.svg';
 import likesIcon from '../images/likes.svg';
@@ -12,8 +12,8 @@ export default class Post extends Component {
     constructor() {
         super();
         this.state = {
-            post: {},
-            author: {}
+            author: {},
+            post: {}
         };
         this.editorRef = React.createRef();
     }
@@ -21,15 +21,21 @@ export default class Post extends Component {
     async componentDidMount() {
         const rawPost = await fetch(`/api/posts/${this.props.match.params.postId}`)
         const jsonPost = await rawPost.json();
-        await this.setState({post: jsonPost.post});
+        this.setState({post: jsonPost.post});
 
         const rawAuthor = await fetch(`/api/users/id=${this.state.post.author}`);
         const jsonAuthor = await rawAuthor.json();
         await this.setState({author: jsonAuthor});
 
-        await fetch(`/api/posts/${this.props.match.params.postId}/view`, {
-            method: 'POST'
-        });
+        // Add a view, only if there hasn't been one this session
+        if(!sessionStorage.getItem(`viewed_post_${this.state.post.id}`)) {
+            await fetch(`/api/posts/${this.props.match.params.postId}/view`, {
+                method: 'PUT'
+            });
+            sessionStorage.setItem(`viewed_post_${this.state.post.id}`, true);
+        } else {
+            console.log('Already seent it');
+        }
     }
     
     render() {
@@ -44,7 +50,9 @@ export default class Post extends Component {
                 </div>
 
                 <div className="post-content">
-                    <Viewer initialValue={this.state.post.content} />
+                    {this.state.post.content && 
+                        <Viewer initialValue={this.state.post.content} />
+                    }
                 </div>
                 <div className="author-info">
                     <h3>By {this.state.author.displayName}</h3>
