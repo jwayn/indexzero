@@ -46,7 +46,7 @@ export default class AuthorInfo extends Component {
                     method: 'DELETE',
                     headers: {'Authorization': `Bearer ${this.context.token}`}
                 });
-                this.setState({ post: { ...this.state.post, likes: this.state.post.likes - 1}});
+                this.setState({ post: { ...this.state.post, likes: Number(this.state.post.likes) - 1}});
                 this.setState({liked: false})
             } else {
                 await fetch(`/api/posts/${this.props.post.id}/like`, 
@@ -54,7 +54,7 @@ export default class AuthorInfo extends Component {
                     method: 'POST',
                     headers: {'Authorization': `Bearer ${this.context.token}`}
                 });
-                this.setState({ post: { ...this.state.post, likes: this.state.post.likes + 1}});
+                this.setState({ post: { ...this.state.post, likes: Number(this.state.post.likes) + 1}});
                 this.setState({liked: true});
             }
         } else {

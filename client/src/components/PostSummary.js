@@ -37,11 +37,11 @@ export default class PostSummary extends Component {
         }
     }
 
-    getViewsAndLikes(id) {
+    getViewsAndLikes = async (id) => {
         fetch(`/api/posts/${id}`)
         .then(res => res.json())
         .then(post => {
-            this.setState({views: post.post.views, likes: post.likes});
+            this.setState({views: post.post.views, likes: Number(post.post.likes)});
         });
     }
     
