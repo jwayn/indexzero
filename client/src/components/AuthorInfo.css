@@ -1,0 +1,49 @@
+.author-info {
+    background-color: #F5F5F5;
+    width: 300px;
+    height: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.author-info__container {
+    padding: 25px;
+}
+
+.like-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+}
+
+.like-container__likes {
+    font-size: 32px;
+}
+
+.like {
+    padding: 10px;
+}
+
+.post-like path {
+    fill: #CFD8DC;
+}
+
+.post-like:hover path {
+    fill: #BDBDBD;
+}
+
+.post-like--liked path {
+    fill: #147CAB;
+}
+
+.post-like--liked:hover path {
+    fill: #BF360C;
+}
+
+.post-like {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}

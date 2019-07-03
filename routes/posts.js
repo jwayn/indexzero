@@ -77,17 +77,33 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
-router.post('/:id/like', verifyToken, (req, res, next) => {
+router.post('/:id/like', verifyToken, async (req, res, next) => {
     try 
     {
-        Post.addPostLike(req.userData.user_id, req.params.id);
-        res.status = 200;
-    } catch {
-        const err = new Error('Database problem.');
-        err.status = 500;
+        const like = await Post.addPostLike(req.userData.user_id, req.params.id);
+        res.sendStatus(200);
+    } catch (err) {
         next(err);
     }
 });
+
+router.delete('/:id/like', verifyToken, async (req, res, next) => {
+    try {
+        const removeLike = await Post.removePostLike(req.userData.user_id, req.params.id);
+        res.sendStatus(200);
+    } catch (err) {
+        next(err);
+    }
+})
+
+router.get('/:id/like/:user_id', async (req, res, next) => {
+    try {
+        likes = await Post.getPostUserLike(req.params.id, req.params.user_id);
+        res.json(likes);
+    } catch (err) {
+        next(err);
+    }
+})
 
 router.put('/:id/view', async (req, res, next) => {
     try 

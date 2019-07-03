@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PostSummary from './PostSummary';
 import Viewer from './Viewer';
+import AuthorInfo from './AuthorInfo';
+import './Post.css';
 
-import moment from 'moment';
 import viewsIcon from '../images/views.svg';
 import likesIcon from '../images/likes.svg';
 
@@ -33,8 +32,6 @@ export default class Post extends Component {
                 method: 'PUT'
             });
             sessionStorage.setItem(`viewed_post_${this.state.post.id}`, true);
-        } else {
-            console.log('Already seent it');
         }
     }
     
@@ -49,20 +46,14 @@ export default class Post extends Component {
                     </div>
                 </div>
 
-                <div className="post-content">
-                    {this.state.post.content && 
-                        <Viewer initialValue={this.state.post.content} />
-                    }
-                </div>
-                <div className="author-info">
-                    <h3>By {this.state.author.displayName}</h3>
-                    <h4 title={moment(this.state.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
-                        Created {moment(this.state.post.created).fromNow()}
-                    </h4>
-                    {this.state.post.edited && 
-                    <h4 title={moment(this.state.post.edited).format('MMMM Do YYYY, h:mm:ss a')}>
-                        Last edited {moment(this.state.post.edited).fromNow()}
-                    </h4>}
+                <div className="post__container">
+                    <div className="post-content">
+                        {this.state.post.content && 
+                            <Viewer initialValue={this.state.post.content} />
+                        }
+                    </div>
+
+                    <AuthorInfo author={this.state.author} post={this.state.post} />
                 </div>
             </div>
         )

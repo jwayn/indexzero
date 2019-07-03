@@ -16,6 +16,10 @@ a {
     line-height: 1.7;
 }
 
+p {
+    line-height: 1.4;
+}
+
 .editor > div {
     border: 1px solid #147CAB;
     border-radius: 4px;

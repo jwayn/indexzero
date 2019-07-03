@@ -7,10 +7,17 @@ module.exports = {
     getPostLikes: function(id) {
         return knex('posts_likes').count('post_id').where('post_id', id).first();
     },
-    addPostLike: function(user_id, post_id) {
-        return knex('posts_likes').insert({post_id, user_id})
+    getPostUserLike: function(post_id, user_id) {
+        return knex('posts_likes')
+            .count()
+            .where({post_id, user_id})
+            .first();
     },
-    removePostLike: function(userId, postId) {
+    addPostLike: function(user_id, post_id) {
+        return knex('posts_likes').insert({user_id, post_id})
+        .returning(['post_id']);
+    },
+    removePostLike: function(user_id, post_id) {
         return knex('posts_likes').where({post_id, user_id}).del();
     },
     getPostViews: function(id){

@@ -9,6 +9,10 @@
   outline: none;
 }
 
+.post__viewer {
+  width: 900px;
+}
+
 .editor__separator {
   border: 0;
   height: 1px;

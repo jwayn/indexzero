@@ -34,7 +34,7 @@ export default class Viewer extends Component {
 
     render() {
         return (
-            <div>
+            <div className="post__viewer">
                 <div className="editor__preview" dangerouslySetInnerHTML={this.renderPreview()}>
                 </div>
             </div>
