@@ -1,18 +1,18 @@
 
 import React, { Component } from 'react';
 import Viewer from './Viewer';
-import AuthorInfo from './AuthorInfo';
+import PostInfo from './PostInfo';
+import CreateComment from './CreateComment';
+import Comments from './Comments';
 import './Post.css';
-
-import viewsIcon from '../images/views.svg';
-import likesIcon from '../images/likes.svg';
 
 export default class Post extends Component {
     constructor() {
         super();
         this.state = {
             author: {},
-            post: {}
+            post: {},
+            postLoaded: false
         };
         this.editorRef = React.createRef();
     }
@@ -33,28 +33,38 @@ export default class Post extends Component {
             });
             sessionStorage.setItem(`viewed_post_${this.state.post.id}`, true);
         }
+
+        if(this.state.post && this.state.author) {
+            this.setState({postLoaded: true});
+        }
     }
     
     render() {
         return(
+            
             <div className="page-container">
-                <div className="page-title">
-                    <div className="page-title__header">
-                        <h1>
-                            {this.state.post.summary}
-                        </h1>
-                    </div>
-                </div>
+                {this.state.postLoaded && 
+                    <React.Fragment>
+                        <div className="page-title">
+                            <div className="page-title__header">
+                                <h1>
+                                    {this.state.post.summary}
+                                </h1>
+                            </div>
+                        </div>
 
-                <div className="post__container">
-                    <div className="post-content">
-                        {this.state.post.content && 
-                            <Viewer initialValue={this.state.post.content} />
-                        }
-                    </div>
-
-                    <AuthorInfo author={this.state.author} post={this.state.post} />
-                </div>
+                        <div className="post__container">
+                            <div className="post-content">
+                                {this.state.post.content && 
+                                    <Viewer initialValue={this.state.post.content} />
+                                }
+                            </div>
+                            
+                            <PostInfo author={this.state.author} post={this.state.post} />
+                        </div>
+                        <Comments postId={this.state.post.id} />
+                    </React.Fragment>
+                }
             </div>
         )
     }

@@ -6,4 +6,7 @@
 .post__container {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    border-bottom: 1px solid #BDBDBD;
 }
