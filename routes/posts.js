@@ -68,7 +68,7 @@ router.get('/:id', async (req, res, next) => {
     {
         let post = await Post.getOneById(req.params.id);
         let likes = await Post.getPostLikes(req.params.id);
-        post.likes = await likes.count;
+        post.likes = await Number(likes.count);
         res.json({post});
     } catch {
         const err = new Error('Problem retrieving post.');
