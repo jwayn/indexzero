@@ -67,12 +67,12 @@ export default class PostInfo extends Component {
                             <h2>Created by {this.props.author.displayName}</h2>
                             <p>
                                 <span title={moment(this.props.post.created).format('MMMM Do YYYY, h:mm:ss a')}>
-                                    Created {moment(this.props.post.created).format('MMMM Do YYYY, h:mm:ss a')}.
+                                    Created {moment(this.props.post.created).fromNow()}.
                                 </span><br />
                                 {this.props.post.edited && 
                                 <React.Fragment>
                                     <span title={moment(this.props.post.edited).format('MMMM Do YYYY, h:mm:ss a')}>
-                                        Last edited {moment(this.props.post.edited).format('MMMM Do YYYY, h:mm:ss a')}
+                                        Last edited {moment(this.props.post.edited).fromNow()}
                                     </span> <br />
                                 </React.Fragment>
                                 }
