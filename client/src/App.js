@@ -42,6 +42,7 @@ class App extends Component {
     localStorage.setItem('tokenExpiration', d);
     localStorage.setItem('userId', userId);
     this.setState({token, userId, tokenExpiration: d});
+    sessionStorage.clear();
   };
 
   logout = () => {
