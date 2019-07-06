@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import Viewer from './Viewer';
 import PostInfo from './PostInfo';
-import CreateComment from './CreateComment';
 import Comments from './Comments';
 import './Post.css';
 
