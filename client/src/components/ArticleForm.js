@@ -18,9 +18,6 @@ export default class ArticleForm extends Component {
     }
 
     submitArticle = async () => {
-        console.log(this.state.tags);
-        console.log(this.state.body);
-        console.log(this.context.token);
         const headers = {
             'Content-Type' : 'application/json',
             'Authorization' : 'Bearer ' + this.context.token
@@ -41,11 +38,9 @@ export default class ArticleForm extends Component {
             body: JSON.stringify(body)
         };
 
-        console.log(options);
-
         const returnedPost = await fetch('/api/posts/', options);
-
-        console.log(returnedPost);
+        const jsonPost = await returnedPost.json();
+        window.location.assign(`/posts/${jsonPost.id}`);
     }
 
     addTag = (event) => {

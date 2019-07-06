@@ -56,6 +56,7 @@ router.post('/', verifyToken, async (req, res, next) => {
                     }
                 });
             }
+            res.json(post);
         }
     } catch (err) {
         next(err)
