@@ -15,7 +15,7 @@ export default class ArticleForm extends Component {
     }
 
     submitComment = async () => {
-        if(this.context.verified === "true") {
+        if(this.context.verified === true) {
             const headers = {
                 'Content-Type' : 'application/json',
                 'Authorization' : 'Bearer ' + this.context.token
@@ -54,7 +54,6 @@ export default class ArticleForm extends Component {
     render() {
         return (
             <div className="comment-create-container">
-                <h2>Create a Comment</h2>
                 <div className="form-container">
                     <div className="form-container__group editor">
                         <label className="input__label">Add a comment</label>

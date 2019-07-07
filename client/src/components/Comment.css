@@ -1,0 +1,25 @@
+.comment-create-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.comment-create-container > h2 {
+    text-align: center;
+}
+
+.comments-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 25px 0;
+}
+
+.comment {
+    border: 1px solid #BDBDBD;
+    background-color: #FAFAFA;
+    border-radius: 4px;
+    margin: 5px;
+}

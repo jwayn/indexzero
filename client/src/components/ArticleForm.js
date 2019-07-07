@@ -18,29 +18,37 @@ export default class ArticleForm extends Component {
     }
 
     submitArticle = async () => {
-        const headers = {
-            'Content-Type' : 'application/json',
-            'Authorization' : 'Bearer ' + this.context.token
+        if(this.context.verified === true) {
+            const headers = {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + this.context.token
+            }
+            
+            const body = {
+                post: {
+                    summary: this.state.summary,
+                    content: this.state.body,
+                    identity: 'article'
+                }, 
+                tags: this.state.tags.map(tag => tag.name)
+            }
+    
+            const options = {
+                headers,
+                method: 'POST',
+                body: JSON.stringify(body)
+            };
+    
+            const returnedPost = await fetch('/api/posts/', options);
+            const jsonPost = await returnedPost.json();
+            if(returnedPost.status === 200) {
+                window.location.assign(`/posts/${jsonPost.id}`);
+            } else {
+                this.context.notify('Your post could not be submitted at this time.');
+            }
+        } else {
+            this.context.notify('verify');
         }
-        
-        const body = {
-            post: {
-                summary: this.state.summary,
-                content: this.state.body,
-                identity: 'article'
-            }, 
-            tags: this.state.tags.map(tag => tag.name)
-        }
-
-        const options = {
-            headers,
-            method: 'POST',
-            body: JSON.stringify(body)
-        };
-
-        const returnedPost = await fetch('/api/posts/', options);
-        const jsonPost = await returnedPost.json();
-        window.location.assign(`/posts/${jsonPost.id}`);
     }
 
     addTag = (event) => {
