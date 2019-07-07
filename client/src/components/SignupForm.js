@@ -115,7 +115,7 @@ export default class SignupForm extends Component {
                 password,
                 displayName
             });
-            const rawRes = await fetch('/api/auth/signup', {
+            fetch('/api/auth/signup', {
                 method: 'POST',
                 body,
                 headers: {
@@ -126,7 +126,7 @@ export default class SignupForm extends Component {
                 return rawRes.json();
             }).then(res => {
                 if (res.token) {
-                    this.context.login(res.token, res.userId);
+                    this.context.login(res.token, res.userId, res.verified);
                 } else {
                     this.props.updateInfo(res.message);
                     this.emailEl.current.value = '';

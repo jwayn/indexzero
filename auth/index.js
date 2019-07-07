@@ -21,13 +21,13 @@ function validUser(user) {
     return validEmail && validPassword;
 }
 
-function generateToken() {
-    var buf = new Buffer.alloc(16);
-    for (var i = 0; i < buf.length; i++) {
-        buf[i] = Math.floor(Math.random() * 256);
+function generateToken(length) {
+    let token = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$%^&*-_=+";
+    for(let i = 0; i < length; i++) {
+        token += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    var id = buf.toString('base64');
-    return id;
+    return token;
 }
 
 router.post('/login', async (req, res, next) => {
@@ -36,11 +36,13 @@ router.post('/login', async (req, res, next) => {
             const user = await User.getOneByEmail(req.body.email);
             if(user) {
                 const result = await bcrypt.compare(req.body.password, user.password);
+                console.log(user);
                 if(result){
-                    jwt.sign({user_id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                    jwt.sign({user_id: user.id, role: user.role, verified: user.active}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
                         res.json({
                             token,
-                            userId: user.id
+                            userId: user.id,
+                            verified: user.active
                         });
                     });
                 } else {
@@ -69,7 +71,7 @@ router.post('/signup', async (req, res, next) => {
             };
 
             const newUser = await User.create(user);
-            const key = await generateToken();
+            const key = await generateToken(20);
             const returnData = await User.createVerification(newUser.id, key, newUser.email)
             const mailOpts = {
                 from: config.email.from,
@@ -87,10 +89,11 @@ router.post('/signup', async (req, res, next) => {
                 }
             });
 
-            await jwt.sign({user_id: newUser.id, role: newUser.role}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+            await jwt.sign({user_id: newUser.id, role: newUser.role, verified: false}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
                 res.json({
                     token,
-                    userId: newUser.id
+                    userId: newUser.id,
+                    verified: false
                 });
             });
 
@@ -107,17 +110,25 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.put('/verify', async (req, res, next) => {
-    console.log(req.body);
-    let key = req.body.key;
-    if(key) {
-        const record = await User.getOneByVerificationKey(key)
-        if(record) {
-            await User.update(record.user_id, {active: true});
-            await User.deleteActivationRecord(record.user_id);
-            res.status(200).json({message: 'User verified.'});
+    try {
+        let key = req.body.key;
+        if(key) {
+            console.log('Key: ', key);
+            const record = await User.getOneByVerificationKey(key);
+            console.log(record);
+            if(record) {
+                await User.update(record.id, {active: 'true'});
+                await User.deleteActivationRecord(record.id);
+                const token = await jwt.sign({user_id: record.id, role: record.role, verified: true},  process.env.JWT_SECRET, {expiresIn: '1d'})
+                res.json({token, userId: record.id});
+            } else {
+                next(createError(403, 'Verification key is invalid.'));
+            }
         } else {
-            next(createError(403, 'Verification key is invalid.'));
+            next(createError(403, 'No verification key supplied.'));
         }
+    } catch (err) {
+        next(err);
     }
 });
 

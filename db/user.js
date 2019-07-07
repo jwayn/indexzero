@@ -25,7 +25,8 @@ module.exports = {
         })
     },
     getOneByVerificationKey(key) {
-        return knex('user_verification').select('user_id').where({key}).first();
+        return knex('user_verification').join('users', 'user_verification.user_id', '=', 'users.id')
+        .select('users.id', 'users.role').where('user_verification.key', key).first();
     },
     deleteActivationRecord(user_id) {
         return knex('user_verification').where({user_id}).delete();

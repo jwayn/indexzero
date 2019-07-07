@@ -1,0 +1,23 @@
+.verification-status {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px;
+}
+
+.verification-status > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.verification-status h2 {
+    text-align: center;
+    padding: 25px;
+}
+
+.verification-status img {
+    margin-top: 100px;
+    justify-self: center;
+    max-width: 600px;
+}

@@ -37,10 +37,10 @@ export default class LoginForm extends Component {
         }
 
         if (this.validateEmail(email)) {
-        const body = JSON.stringify({
-            email: email,
-            password: password
-        });
+            const body = JSON.stringify({
+                email: email,
+                password: password
+            });
             await fetch('/api/auth/login', {
                 method: 'POST',
                 body,
@@ -50,9 +50,9 @@ export default class LoginForm extends Component {
             }).then(rawRes => {
                 return rawRes.json();
             }).then(res => {
-                console.log(res);
+                console.log('Response: ', res);
                 if (res.token) {
-                    this.context.login(res.token, res.userId);
+                    this.context.login(res.token, res.userId, res.verified);
                 } else {
                     this.props.updateInfo(res.message);
                     this.passwordEl.current.value = '';
