@@ -8,9 +8,7 @@ import LoggedIn from './LoggedIn';
 
 class Header extends Component{
 
-    login() {
-            
-    }
+    static contextType = AuthContext;
 
     render() {
         return (

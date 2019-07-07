@@ -38,7 +38,7 @@ router.post('/login', async (req, res, next) => {
                 const result = await bcrypt.compare(req.body.password, user.password);
                 console.log(user);
                 if(result){
-                    jwt.sign({user_id: user.id, role: user.role, verified: user.active}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                    jwt.sign({user_id: user.id, role: user.role, verified: user.active, email: user.email}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
                         res.json({
                             token,
                             userId: user.id,
@@ -77,8 +77,8 @@ router.post('/signup', async (req, res, next) => {
                 from: config.email.from,
                 to: newUser.email,
                 subject: 'Verify your IndexZer0 account.',
-                text : `Please visit ${config.url}/verify/${returnData.key} to verify your account.`,
-                html : `<p>Please visit <a href="${config.url}/verify/${returnData.key}">click here</a> to verify your IndexZer0 account.</p>`
+                text : `Please visit ${config.url}/verify/token=${returnData.key} to verify your account.`,
+                html : `<p>Please <a href="${config.url}/verify/token=${returnData.key}">click here</a> to verify your IndexZer0 account.</p>`
             };
 
             await mailer.sendMail(mailOpts, (err, response) => {
@@ -89,7 +89,7 @@ router.post('/signup', async (req, res, next) => {
                 }
             });
 
-            await jwt.sign({user_id: newUser.id, role: newUser.role, verified: false}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+            await jwt.sign({user_id: newUser.id, role: newUser.role, verified: false, email: newUser.email}, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
                 res.json({
                     token,
                     userId: newUser.id,
@@ -119,7 +119,7 @@ router.put('/verify', async (req, res, next) => {
             if(record) {
                 await User.update(record.id, {active: 'true'});
                 await User.deleteActivationRecord(record.id);
-                const token = await jwt.sign({user_id: record.id, role: record.role, verified: true},  process.env.JWT_SECRET, {expiresIn: '1d'})
+                const token = await jwt.sign({user_id: record.id, role: record.role, verified: true, email: record.email},  process.env.JWT_SECRET, {expiresIn: '1d'})
                 res.json({token, userId: record.id});
             } else {
                 next(createError(403, 'Verification key is invalid.'));
@@ -131,6 +131,32 @@ router.put('/verify', async (req, res, next) => {
         next(err);
     }
 });
+
+router.post('/verify/resend-token', verifyToken, async (req, res, next) => {
+    const verificationToken = await User.getVerificationRecord(req.userData.user_id);
+    if(verificationToken) {
+        const mailOpts = {
+            from: config.email.from,
+            to: req.userData.email,
+            subject: 'Verify your IndexZer0 account.',
+            text : `Please visit ${config.url}/verify/token=${verificationToken} to verify your account.`,
+            html : `<p>Please <a href="${config.url}/verify/token=${verificationToken}">click here</a> to verify your IndexZer0 account.</p>`
+        };
+    
+        await mailer.sendMail(mailOpts, (err, response) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Mail sent: ', response);
+            }
+        });
+
+        res.sendStatus(200);
+    } else {
+        next(createError(500, 'Something has gone wrong.'));
+    }
+}) 
+
 
 router.put('/reset-password', verifyToken, async (req, res, next) => {
     try {

@@ -15,29 +15,32 @@ export default class ArticleForm extends Component {
     }
 
     submitComment = async () => {
-        console.log('This thing on?');
-        const headers = {
-            'Content-Type' : 'application/json',
-            'Authorization' : 'Bearer ' + this.context.token
-        }
-        
-        const body = {
-            content: this.state.body
-        }
-
-        const options = {
-            headers,
-            method: 'POST',
-            body: JSON.stringify(body)
-        };
-
-        const returnedComment = await fetch(`/api/comments/parentpost=${this.props.postId}`, options);
-        if(returnedComment.status === 200) {
-            const commentJson = await returnedComment.json();
-            this.props.addComment(commentJson);
+        if(this.context.verified === "true") {
+            const headers = {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + this.context.token
+            }
+            
+            const body = {
+                content: this.state.body
+            }
+    
+            const options = {
+                headers,
+                method: 'POST',
+                body: JSON.stringify(body)
+            };
+    
+            const returnedComment = await fetch(`/api/comments/parentpost=${this.props.postId}`, options);
+            if(returnedComment.status === 200) {
+                const commentJson = await returnedComment.json();
+                this.props.addComment(commentJson);
+            } else {
+                // Signal to the user that the comment could not be posted
+                this.context.notify('Your comment could not be posted at this time.');
+            }
         } else {
-            console.log('Fuck');
-            // Signal to the user that the comment could not be posted
+            this.context.notify('verify');
         }
 
         

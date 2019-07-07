@@ -24,6 +24,12 @@ module.exports = {
             }
         })
     },
+    getVerificationRecord(user_id) {
+        console.log('User id: ', user_id);
+        return knex('user_verification').select('key').where({user_id}).first().then(key => {
+            return key;
+        })
+    },
     getOneByVerificationKey(key) {
         return knex('user_verification').join('users', 'user_verification.user_id', '=', 'users.id')
         .select('users.id', 'users.role').where('user_verification.key', key).first();

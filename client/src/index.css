@@ -133,7 +133,17 @@ p {
     animation: 1.5s spin infinite linear;
     margin: 0;
 }
-  
+
+.fake-link {
+    color: #147CAB;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.fake-link:hover {
+    color: #3EBED5;
+}
+
 @keyframes spin {
 to {
     transform: rotate(360deg);

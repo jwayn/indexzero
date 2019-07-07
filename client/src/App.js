@@ -67,6 +67,14 @@ class App extends Component {
   };
 
   createNotification = (text) => {
+    switch (text) {
+      case 'verify':
+        text = {type: 'verify', text: ''}
+        break;
+      default:
+        text = {type: 'text', text: text}
+        break;
+    }
     this.setState({notifications: [
       ...this.state.notifications,
       text
@@ -74,10 +82,7 @@ class App extends Component {
   }
 
   createNewNotification = () => {
-    this.setState({notifications: [
-      ...this.state.notifications,
-      'Test text boiiii!'
-    ]})
+    this.createNotification('Hello there!');
   }
 
   removeNotification = (index) => {
@@ -92,9 +97,11 @@ class App extends Component {
         <AuthContext.Provider value={{
           token: this.state.token,
           tokenExpiration: this.state.tokenExpiration,
+          verified: this.state.verified,
           userId: this.state.userId,
           login: this.login,
-          logout: this.logout
+          logout: this.logout,
+          notify: this.createNotification
         }}>
           <BrowserRouter>
             <Header />
@@ -103,24 +110,24 @@ class App extends Component {
               {this.state.token && <Redirect from="/login" to="/" exact={true} />}
               {this.state.token && <Route path="/new_article" exact component={ArticleForm} />}
               {!this.state.token && <Redirect from="/new_article" to="/login" exact={true} />}
-              <Route path="/verify/:key" component={Verify} exact />
+              <Route path="/verify/token=:key" component={Verify} exact />
               <Route path="/posts/:postId" component={Post} exact />
               <Route path="/" component={RecentPosts} exact />
               <Route component={PageNotFound} />
             </Switch>
           </BrowserRouter>
-        </AuthContext.Provider>
         <button onClick={this.createNewNotification}>
           Notificus Totalis!
         </button>
         <div className="notification-container">
           {this.state.notifications.map((notification, index) => {
               return (
-                <Notification text={notification} id={index} key={index} close={this.removeNotification} />
+                <Notification text={notification.text} type={notification.type} id={index} key={index} close={this.removeNotification} />
               )
             })
           }
         </div>
+        </AuthContext.Provider>
       </div>
     );
   }

@@ -33,7 +33,6 @@ export default class Comments extends Component {
         const user = await fetch(`/api/users/id=${comment.author}`);
         const jsonUser = await user.json();
         comment.display_name = jsonUser.displayName;
-        console.log('Comment: ', comment);
         this.setState({comments: [...this.state.comments, comment]
             .sort((a, b) => {
                 let keyA = new Date(a.created);
