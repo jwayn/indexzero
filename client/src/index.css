@@ -8,6 +8,7 @@
 
 h1, h2, h3, h4, h5, h6, p, a, label, button, li, span {
     font-family: 'Montserrat', sans-serif;
+    color: #141E2C;
 }
 
 a {
@@ -118,6 +119,7 @@ p {
 
 .page-title {
     width: 100%;
+    padding: 0 25px;
     border-bottom: 1px solid #BDBDBD;
     display: flex;
     justify-content: center;
@@ -147,8 +149,14 @@ p {
     color: #3EBED5;
 }
 
-@keyframes spin {
-to {
-    transform: rotate(360deg);
+.icon {
+    width: 25px;
+    height: 25px;
+    margin: 0 5px;
 }
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }

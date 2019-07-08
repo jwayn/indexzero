@@ -1,6 +1,6 @@
 .author-info {
     background-color: #F5F5F5;
-    width: 300px;
+    width: 100%;
     height: auto;
     padding: 15px;
     display: flex;
@@ -10,7 +10,8 @@
 }
 
 .author-info__container {
-    padding: 25px;
+    padding: 20px 10px;
+    width: 300px;
 }
 
 .like-container {

@@ -42,7 +42,8 @@ router.post('/login', async (req, res, next) => {
                         res.json({
                             token,
                             userId: user.id,
-                            verified: user.active
+                            verified: user.active,
+                            role: user.role
                         });
                     });
                 } else {
@@ -67,7 +68,8 @@ router.post('/signup', async (req, res, next) => {
                 email: req.body.email,
                 password: hash,
                 display_name: req.body.displayName,
-                created_at: new Date()
+                created_at: new Date(),
+                role: 'user'
             };
 
             const newUser = await User.create(user);

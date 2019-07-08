@@ -23,6 +23,7 @@ class App extends Component {
     token: null,
     userId: null,
     verified: null,
+    role: null,
     notifications: []
   };
 
@@ -32,9 +33,10 @@ class App extends Component {
     const tokenExpiration = localStorage.getItem('tokenExpiration');
     const userId = localStorage.getItem('userId');
     const verified = localStorage.getItem('verified');
+    const role = localStorage.getItem('role');
     //If token and expiration exist in local storage, and aren't expired, set state to token, otherwise clear them
-    if (token && tokenExpiration && verified && new Date(tokenExpiration) > new Date()) {
-      await this.setState({token, tokenExpiration, userId, verified});
+    if (token && role && tokenExpiration && verified && new Date(tokenExpiration) > new Date()) {
+      await this.setState({token, tokenExpiration, userId, verified, role});
       if(this.state.verified === 'false') {
         this.createNotification('You will not be able to create postings, comments, or vote until you verify your account.')
       };
@@ -43,14 +45,15 @@ class App extends Component {
     }
   }
 
-  login = (token, userId, verified) => {
-    console.log('From context login: ', token, userId, verified);
+  login = (token, userId, verified, role) => {
+    console.log('From context login: ', token, userId, verified, role);
     let d = new Date(); d.setDate( d.getDate() + 1 );
     localStorage.setItem('jwtToken', token);
     localStorage.setItem('tokenExpiration', d);
     localStorage.setItem('userId', userId);
     localStorage.setItem('verified', verified);
-    this.setState({token, userId, tokenExpiration: d, verified});
+    localStorage.setItem('role', role);
+    this.setState({token, userId, tokenExpiration: d, verified, role});
     sessionStorage.clear();
     if(this.state.verified === false) {
       this.createNotification('You will not be able to create postings, comments, or vote until you verify your account.')
@@ -61,7 +64,8 @@ class App extends Component {
     this.setState({
       token: null,
       userId: null,
-      verified: null
+      verified: null,
+      role: null
     });
     localStorage.clear();
   };
@@ -101,7 +105,8 @@ class App extends Component {
           userId: this.state.userId,
           login: this.login,
           logout: this.logout,
-          notify: this.createNotification
+          notify: this.createNotification,
+          role: this.state.role
         }}>
           <BrowserRouter>
             <Header />

@@ -18,7 +18,7 @@ export default class ArticleForm extends Component {
     }
 
     submitArticle = async () => {
-        if(this.context.verified === true) {
+        if(this.context.verified === 'true' || this.context.verified === true) {
             const headers = {
                 'Content-Type' : 'application/json',
                 'Authorization' : 'Bearer ' + this.context.token

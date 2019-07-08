@@ -52,7 +52,7 @@ export default class LoginForm extends Component {
             }).then(res => {
                 console.log('Response: ', res);
                 if (res.token) {
-                    this.context.login(res.token, res.userId, res.verified);
+                    this.context.login(res.token, res.userId, res.verified, res.role);
                 } else {
                     this.props.updateInfo(res.message);
                     this.passwordEl.current.value = '';

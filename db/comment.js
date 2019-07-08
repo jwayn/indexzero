@@ -12,7 +12,7 @@ module.exports = {
         return knex('comments')
         .join('posts', 'comments.parent_post', '=', 'posts.id').where('posts.id', postid)
         .join('users', 'comments.author', '=', 'users.id')
-        .select('comments.created', 'comments.id', 'comments.score', 'comments.content', 'comments.score', 'comments.updated', 'users.email', 'users.display_name')
+        .select('comments.created', 'comments.id', 'comments.author', 'comments.score', 'comments.content', 'comments.score', 'comments.updated', 'users.email', 'users.display_name')
         .orderBy('comments.created', 'desc')
         .orderBy('comments.updated', 'desc')
     },

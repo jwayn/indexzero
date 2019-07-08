@@ -40,10 +40,10 @@ export default class Editor extends Component {
                 <div className="editor__controls">
 
                 </div>
-                <textarea className="editor__textarea" onChange={this.onEditorChange}/>
+                <textarea className="editor__textarea" onChange={this.onEditorChange} ref={this.props.editorRef} />
                 <hr className="editor__separator" />
                 {this.props.summary && <h1>{this.props.summary}</h1>}
-                <div className="editor__preview" dangerouslySetInnerHTML={this.renderPreview()}>
+                <div className="editor__preview" ref={this.props.previewRef} dangerouslySetInnerHTML={this.renderPreview()}>
                 </div>
             </div>
         )

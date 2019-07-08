@@ -21,5 +21,56 @@
     border: 1px solid #BDBDBD;
     background-color: #FAFAFA;
     border-radius: 4px;
-    margin: 5px;
+    margin: 10px;
+    display: flex;
 }
+
+.comment__likes {
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment__body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comment__body__info {
+    padding: 5px;
+    width: 100%;
+    border-bottom: 1px solid #BDBDBD;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment__body__content {
+    padding: 25px;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.comment__body__footer {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment__body__footer__reply {
+    border-top: 1px solid #BDBDBD;
+    margin-top: 15px;
+}
+
+.comment__body__footer__info {
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment__body__info__controls {
+    display: flex;
+}
+

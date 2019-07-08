@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import CommentViewer from './CommentViewer';
 import CreateComment from './CreateComment';
-
-import moment from 'moment';
+import Comment from './Comment';
 
 import './Comment.css';
+import AuthContext from '../context/auth-context';
 
 export default class Comments extends Component {
+
+    static contextType = AuthContext;
 
     constructor(props) {
         super(props);
@@ -25,7 +26,7 @@ export default class Comments extends Component {
             this.setState({comments: comments});
             console.log(this.state.comments);
         } else {
-            // Notify user of comments not loading
+            this.context.notify('Comments were unable to be retrieved at this time.');
         }
     }
 
@@ -47,22 +48,12 @@ export default class Comments extends Component {
     render() {
         return (
             <React.Fragment>
-                <CreateComment postId={this.props.postId} addComment={this.addComment}/>
+                <CreateComment postId={this.props.postId} addComment={this.addComment} />
                 <div className="comments-container">
                     {this.state.comments && 
                         this.state.comments.map(comment => {
                             return (
-                            <div className="comment" key={comment.id}>
-                                <div className="comment__likes">
-
-                                </div>
-                                <div className="comment__author">
-                                    <span title={moment(comment.created).format('MMMM Do YYYY, h:mm:ss a')}>Created {moment(comment.created).fromNow()} by {comment.display_name}</span>
-                                </div>
-                                <div className="comment__content">
-                                    <CommentViewer initialValue={comment.content}/>
-                                </div>
-                            </div>
+                                <Comment comment={comment} postId={this.props.postId}/>
                             )
                         })
                     }
